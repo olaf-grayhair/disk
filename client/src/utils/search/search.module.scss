@@ -1,0 +1,15 @@
+@import '../colors.scss';
+.search{
+    input{
+        padding: 5px 10px;
+        border: none;
+        background-color: rgba($color: #c9bebe, $alpha: 0.2);
+        width: 240px;
+        border-bottom: 2px solid black;
+        font-weight: 600;
+        transition: all ease .4s;
+        &:focus{
+            background-color: white;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+@import "../../utils/colors.scss";
+.contextmenu{
+    width: 320px;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 2px 2px rgb(6, 5, 5);
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    span{
+        display: block;
+        margin: 5px 0;
+        font-size: 16px;
+        padding: 5px 10px;
+        &:hover{
+            background-color: $hover;
+        }
+    }
+}

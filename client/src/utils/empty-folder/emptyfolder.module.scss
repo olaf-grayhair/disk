@@ -1,0 +1,14 @@
+.emptyfolder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: calc(100vh - 305px);
+    img{
+        width: 240px;
+        margin-bottom: 10px;
+    }
+    h3{
+        font-size: 20px;
+    }
+}

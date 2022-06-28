@@ -1,0 +1,28 @@
+.loadfile{
+    .label {
+        width: 100px;
+        text-align: center;
+        cursor: pointer;
+        display: block;
+        transition: all 0.18s ease-in-out;
+        border: 1px solid #4FD666;
+        background: linear-gradient(to top right, #3EC97A, #69EA49 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0)) top right/500% 500%;
+        color: #4FD666;
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .label:hover {
+        color: white;
+        background-position: bottom left;
+    }
+        
+    .input {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+}

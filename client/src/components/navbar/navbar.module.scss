@@ -1,0 +1,29 @@
+@import "../../utils/colors.scss";
+
+.navbar{
+    background-color: $navbar;
+    height: 100%;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo{
+        width: 70px;
+    }
+
+    .login{
+        width: 500px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .user{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .text{
+            cursor: pointer;
+        }
+    }
+
+}

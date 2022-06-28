@@ -1,0 +1,6 @@
+{
+    "serverPort": 5000,
+    "dbUrl": "mongodb+srv://coldworld:RG5tdtFCpyMNf6a@cloud.mvbvr.mongodb.net/?retryWrites=true&w=majority",
+    "secretKey": "secret-key",
+    "filePath": "G:\\JS_project\\REACT\\mern-cloud-disk\\server\\files"
+}

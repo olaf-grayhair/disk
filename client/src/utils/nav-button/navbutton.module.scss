@@ -1,0 +1,26 @@
+.navbutton{
+    margin-bottom: 20px;
+    padding: 10px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .navigate{
+        margin-right: 15px;
+    }
+    .arrow, .active{
+        width: 15px;
+        height: 15px;
+        background-image: url('../../assets/images/arrow.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    &:hover{
+        background-color: rgba($color: #a9a9a9, $alpha: 0.3);
+    }
+}
+.active{
+    transform: rotate(90deg);
+}
