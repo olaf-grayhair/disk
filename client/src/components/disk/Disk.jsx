@@ -9,6 +9,10 @@ import style from './disk.module.scss'
 import FileList from './fileList/FileList'
 import File from './fileList/file/File'
 import Sort from '../../utils/sort/Sort';
+import { FaListUl } from 'react-icons/fa';
+import { BsFillGrid3X3GapFill } from 'react-icons/bs';
+import { setView } from '../../reducers/settingsSlice';
+
 
 const Disk = () => {
     const [sort, setSort] = useState('')
@@ -51,16 +55,39 @@ const Disk = () => {
         files.forEach(file => dispatch(uploadFile(file, currentDir)))
     }
 
+    const setGridView = () => {
+        dispatch(setView('grid'))
+        localStorage.setItem('setView','grid')
+    }
+
+    const setListView = () => {
+        dispatch(setView('list'))
+        localStorage.setItem('setView','list')
+    }
+
     return (
         <div className={style.disk}>
             <div className={style.nav__wrap}>
                 {dirStack < 1 ? <NavButton name={'My disk'}/> : stack}
             </div>
             <div className={style.btn__block}>
-                <button onClick={back}>Back</button>
-                <button onClick={openPopup}>New folder</button>
-                <LoadFile action={uploads}/>
-                <Sort setSort={setSort}/>
+                <div className={style.btn__left}>
+                    <button onClick={back}>Back</button>
+                    <button onClick={openPopup}>New folder</button>
+                    <LoadFile action={uploads}/>
+                </div>
+                <div className={style.btn__right}>
+                    <Sort setSort={setSort}/>
+                    <button className={style.btn} 
+                    onClick={setListView}>
+                        <FaListUl size={'1.2em'}/>
+                    </button>
+
+                    <button className={style.btn}
+                    onClick={setGridView}>
+                        <BsFillGrid3X3GapFill size={'1.2em'}/>
+                    </button>
+                </div>
             </div>
             <FileList/>
             <Popup 

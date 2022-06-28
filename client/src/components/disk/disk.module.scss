@@ -9,8 +9,27 @@
     }
     .btn__block{
         margin-bottom: 40px;
-        width: 400px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        .btn__left, .btn__right{
+            width: 280px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .btn{
+                width: 24px;
+                height: 24px;
+                transition: all ease .4s;
+                &:hover{
+                    background-color: $hover;
+                    transform: scale(1.1);
+                }
+            }
+        }
+        .btn__right{
+            width: 180px;
+        }
+
     }
 }

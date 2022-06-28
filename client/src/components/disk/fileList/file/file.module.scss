@@ -1,15 +1,22 @@
 @import '../../../../utils/colors.scss';
-.file{
+.list, .grid{
     cursor: pointer;
     padding: 10px;
     display: grid;
     grid-template-columns: 1fr 4fr repeat(4, 1fr);
-    margin-bottom: 10px;
+    margin: 10px 0;
     align-items: center;
+    border-top: 1px solid $popup;
     &:hover{
         background-color: $hover;
     }
 
+    img{
+        margin-bottom: 10px;
+        width: 100%;
+        height: 65%;
+        object-fit: contain;
+    }
     .logo{
         width: 50px;
     }
@@ -17,5 +24,31 @@
         font-weight: 600;
         font-size: 16px;
         margin-left: 20px;
+    }
+}
+
+.grid{
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid $popup;
+    margin: 7.5px 15px 7.5px 0px;
+
+    img{
+        margin-bottom: 10px;
+        width: 100%;
+        height: 65%;
+        object-fit: contain;
+    }
+    span{
+        text-align: center;
+        margin: 0;
+        width: 100%;
+        white-space: nowrap; /* Текст не переносится */
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

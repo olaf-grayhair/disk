@@ -75,12 +75,16 @@ class FileController {
             user.usedSpace = user.usedSpace + file.size
 
             let path;
+            let staticPath;
             if (parent) {
                 path = `${config.get('filePath')}\\${user._id}\\${parent.path}\\${file.name}`
+                staticPath = `${user._id}\\${parent.path}\\${file.name}`
             } else {
                 path = `${config.get('filePath')}\\${user._id}\\${file.name}`
+                staticPath = `${user._id}\\${file.name}`
             }
 
+            console.log(staticPath, 'upload');
             if (fs.existsSync(path)) {
                 return res.status(400).json({message: 'File already exist'})
             }
@@ -97,12 +101,12 @@ class FileController {
                 size: file.size,
                 path: filePath,
                 parent: parent?._id,
-                user: user._id
+                user: user._id,
+                staticPath: staticPath,
             })
 
             await dbFile.save()
             await user.save()
-            console.log(res, 'dbFile');
 
             res.json(dbFile)
         } catch (e) {
@@ -114,12 +118,8 @@ class FileController {
     async downloadFile(req, res) {
         try{
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            // const path = config.get('filePath')`\\${req.user.id}\\${file.path}\\${file.name}`
-
-            const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path + '\\' + file.name
-
-            // console.log(res, 'FILECONTROLER');
-            // console.log(path, 'FILECONTROLER');
+            // const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path + '\\' + file.name
+            const path = fileService.getPath(file)
             if (fs.existsSync(path)) {
                 return res.download(path, file.name)
             }

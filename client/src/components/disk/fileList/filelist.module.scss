@@ -1,8 +1,25 @@
 @import "../../../utils/colors.scss";
 
 .filelist{
-    .dirs{
 
+    .list{
+        .header{
+            display: grid;
+            grid-template-columns: 4fr repeat(3, 1fr);
+            //ДОДЕЛАТЬ!!!
+            padding: 10px;
+            align-items: center;
+            span{
+                font-weight: 600;
+                font-size: 16px;
+                margin-left: 20px;
+            }
+        }
+    }
+
+    .grid{
+        display: flex;
+        flex-wrap: wrap;
     }
     .dragDrop{
         border: 4px $blue solid;

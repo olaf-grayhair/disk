@@ -1,5 +1,6 @@
 import {React, useState} from 'react';
 import { useDispatch } from 'react-redux';
+import { FiDelete } from 'react-icons/fi';
 import { searchFile } from '../../actions/file';
 import style from './search.module.scss'
 
@@ -8,7 +9,12 @@ const Search = () => {
     const dispatch = useDispatch()
     const serchValue = (e) => {
         setSearch(e.target.value)
-        dispatch(searchFile(search))
+        dispatch(searchFile(e.target.value))
+    }
+
+    const clear = () => {
+        setSearch('')
+        dispatch(searchFile(''))
     }
     return (
         <div className={style.search}>
@@ -17,6 +23,12 @@ const Search = () => {
                    value={search}
                    onChange={serchValue}
             />
+            {search && 
+            <button className={style.clear}
+                onClick={clear}>
+                <FiDelete size={'1.3em'}/>
+            </button>}
+            
         </div>
     );
 }

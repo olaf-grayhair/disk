@@ -1,5 +1,5 @@
 import { addFile, delFile, setFiles } from '../reducers/fileSlice';
-import { loading } from '../reducers/settingsSlice';
+import { loading, setView } from '../reducers/settingsSlice';
 import { instance } from '../utils/instance';
 
 
@@ -17,6 +17,7 @@ export const getFiles = (dirId, sort) => {
         }
         try{
             dispatch(loading(true))
+            dispatch(setView(localStorage.getItem('setView')))
             const response = await instance.get(url)
             dispatch(setFiles(response.data))
         }catch(e) {
@@ -108,8 +109,10 @@ export const deleteFile = (id) => {
 
 export const searchFile = (name) => {
     return async (dispatch) => {
+        let url = `files/search?search=${name}`
+        if(name == '') url = 'files'
         try{
-            const response = await instance.get(`files/serch?search=${name}`)                               
+            const response = await instance.get(url)                               
             dispatch(setFiles(response.data))
             console.log(response.data);
         }catch(e) {

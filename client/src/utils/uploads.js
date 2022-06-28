@@ -5,17 +5,17 @@ import rar from '../assets/images/rar.png'
 import mp4 from '../assets/images/mp4.png'
 
 
-export const uploads = () => {
-    if(splitFile === 'png' || splitFile === 'jpg') {
+export const uploads = (file) => {
+    if(file === 'png' || file === 'jpg') {
         return img
     }
-    if(splitFile === 'txt') {
+    if(file === 'txt') {
         return txt
     }
-    if(splitFile === 'zip') {
+    if(file === 'zip') {
         return rar
     }
-    if(splitFile === 'mp4') {
+    if(file === 'mp4') {
         return mp4
     }
     else{

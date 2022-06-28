@@ -15,6 +15,7 @@ const FileList = () => {
     const {files, currentDir} = useSelector((state) => state.file)
     const contextMenu = useSelector((state) => state.user.contextMenu)
     const loader = useSelector(state => state.settings.loader)
+    const view = useSelector(state => state.settings.view)
 
     function dragEnterHandler(e) {
         e.preventDefault()
@@ -59,27 +60,62 @@ const FileList = () => {
         setMenu={setMenu}
     />)
     const content = directories.length >= 1 ? directories : <EmptyFolder/>
-    return (
-        <div className={style.filelist}>
-            {!dragEnter
-                ? <div className={style.dirs}
-                    onDragEnter={dragEnterHandler}
-                    onDragLeave={dragLeaveHandler}
-                    onDragOver={dragEnterHandler}>
-                    {loader ? <Loader/> : content}
-                </div>
 
-                : <div className={style.dragDrop}
-                    onDragEnter={dragEnterHandler}
-                    onDragLeave={dragLeaveHandler}
-                    onDragOver={dragEnterHandler}
-                    onDrop={dropHandler}>
-                    <span>Upload files...</span>
-                </div>
-            }
-            {contextMenu ? <ContextMenu top={points.y} left={points.x} action={closeMenu} files={files}/>  : ''}
-        </div>
-    );
+
+    if(view === 'list') {
+        return (
+            <div className={style.filelist}>
+                {!dragEnter
+                    ? <div className={style.list}
+                        onDragEnter={dragEnterHandler}
+                        onDragLeave={dragLeaveHandler}
+                        onDragOver={dragEnterHandler}>
+                        <div className={style.header}>
+                            <span>name</span>
+                            <span>date</span>
+                            <span>format</span>
+                            <span>size</span>
+                        </div>
+                        {loader ? <Loader/> : content}
+                    </div>
+    
+                    : <div className={style.dragDrop}
+                        onDragEnter={dragEnterHandler}
+                        onDragLeave={dragLeaveHandler}
+                        onDragOver={dragEnterHandler}
+                        onDrop={dropHandler}>
+                        <span>Upload files...</span>
+                    </div>
+                }
+                {contextMenu ? <ContextMenu top={points.y} left={points.x} action={closeMenu} files={files}/>  : ''}
+            </div>
+        );
+    }
+
+
+    if(view === 'grid') {
+        return (
+            <div className={style.filelist}>
+                {!dragEnter
+                    ? <div className={style.grid}
+                        onDragEnter={dragEnterHandler}
+                        onDragLeave={dragLeaveHandler}
+                        onDragOver={dragEnterHandler}>
+                        {loader ? <Loader/> : content}
+                    </div>
+    
+                    : <div className={style.dragDrop}
+                        onDragEnter={dragEnterHandler}
+                        onDragLeave={dragLeaveHandler}
+                        onDragOver={dragEnterHandler}
+                        onDrop={dropHandler}>
+                        <span>Upload files...</span>
+                    </div>
+                }
+                {contextMenu ? <ContextMenu top={points.y} left={points.x} action={closeMenu} files={files}/>  : ''}
+            </div>
+        );
+    }
 }
 
 export default FileList;

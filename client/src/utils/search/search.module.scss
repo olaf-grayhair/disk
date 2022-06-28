@@ -1,7 +1,8 @@
 @import '../colors.scss';
 .search{
+    position: relative;
     input{
-        padding: 5px 10px;
+        padding: 5px 30px 5px 10px;
         border: none;
         background-color: rgba($color: #c9bebe, $alpha: 0.2);
         width: 240px;
@@ -11,5 +12,12 @@
         &:focus{
             background-color: white;
         }
+    }
+    .clear{
+        position: absolute;
+        right: -5px;
+        top: 0px;
+        background-color: none;
+        padding: 5px;
     }
 }

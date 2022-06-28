@@ -1,11 +1,5 @@
-import {React, useState, useEffect} from 'react';
+import { React, useState, useEffect } from 'react';
 import style from './file.module.scss'
-
-import dir from '../../../../assets/images/dir.png'
-import img from '../../../../assets/images/img.png'
-import txt from '../../../../assets/images/txt.png'
-import rar from '../../../../assets/images/rar.png'
-import mp4 from '../../../../assets/images/mp4.png'
 
 import { addNav, setCurrentDir } from '../../../../reducers/fileSlice';
 import { setContextMenu } from "../../../../reducers/userSlice";
@@ -13,11 +7,16 @@ import { setContextMenu } from "../../../../reducers/userSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import ContextMenu from '../../../../utils/contextmenu/ContextMenu';
 import { deleteFile, dowloadFile } from '../../../../actions/file';
-import {sizeOfFiles} from '../../../../utils/sizeOfFiles.js';
+import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
+import FileOpen from './file-open/FileOpen'
+import { setShowFile } from '../../../../reducers/settingsSlice';
+import { uploads } from '../../../../utils/uploads';
 
 
-const FileList = ({name, type, size, date,  _id, openMenu, setMenu}) => {
+const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath }) => {
     const dispatch = useDispatch()
+    const view = useSelector(state => state.settings.view)
+    const showFile = useSelector(state => state.settings.showFile)
     const splitFile = name.split('.', -1).pop()
 
     const [points, setPoints] = useState({ x: 0, y: 0 })
@@ -27,11 +26,17 @@ const FileList = ({name, type, size, date,  _id, openMenu, setMenu}) => {
         dispatch(setContextMenu(true))
         setPoints({ x: e.pageX, y: e.pageY })
     }
+
+    const [state, setstate] = useState(false);
     const changePage = (e) => {
-        if(type === 'dir') {
+        if (type === 'dir') {
             dispatch(setCurrentDir(_id))
-            const pushItem = {name, _id}
+            const pushItem = { name, _id }
             dispatch(addNav(pushItem))
+        }
+        if (type === 'jpg' || type === 'png') {
+            setstate(true)
+            dispatch(setShowFile(true))
         }
         // else{
         //     setMenu(false)
@@ -45,25 +50,6 @@ const FileList = ({name, type, size, date,  _id, openMenu, setMenu}) => {
         // } 
     }
 
-    const splited = () => {
-        if(splitFile === 'png' || splitFile === 'jpg') {
-            return <img src={img} className={style.logo} alt="" />
-        }
-        if(splitFile === 'txt') {
-            return <img src={txt} className={style.logo} alt="" />
-        }
-        if(splitFile === 'zip') {
-            return <img src={rar} className={style.logo} alt="" />
-        }
-        if(splitFile === 'mp4' || splitFile === 'avi') {
-            return <img src={mp4} className={style.logo} alt="" />
-        }
-        else{
-            return <img src={dir} className={style.logo} alt="" />
-        }
-    }
-
-    console.log(sizeOfFiles(size));
     // const openMenu = (e) => {
     //     if(type !== 'dir') {
     //         e.preventDefault()
@@ -82,7 +68,7 @@ const FileList = ({name, type, size, date,  _id, openMenu, setMenu}) => {
     //     console.log(e.type, 'e.type');
     //     setMenu(false)
     //   }
-    
+
     const download = (e) => {
         e.stopPropagation()
         dowloadFile(_id, name)
@@ -94,21 +80,70 @@ const FileList = ({name, type, size, date,  _id, openMenu, setMenu}) => {
         dispatch(deleteFile(_id))
     }
 
-    return (
-        <div className={style.file} 
-            onClick={changePage}
-            // onContextMenu={openContextMenu}
-            // onContextMenu={openMenu}
-            >
-            {splited()}
-            <span>{name}</span>
-            <span>{date.slice(0, 10)}</span>
-            <span>{type}</span>
-            <span>{sizeOfFiles(size)}</span>
-            {/* <button onClick={download}>download</button> */}
-            <button onClick={detele}>Delete</button>
-        </div>
-    );
+    const compareImg = () => {
+        const set = staticPath.split('.', 2).pop()
+        if(set === 'jpg' || set === 'png') {
+            return true
+            // return `http://localhost:5000/${path}`
+        }
+    }
+    const compareFiles = () => {
+        const set = staticPath.split('.', 2).pop()
+        if(set === 'txt') {
+            return <pre>{`http://localhost:5000/62b4381b44cf10f7eee4ac5e/static/github.TXT`}</pre>
+        }
+        if(set === 'jpg' || set === 'png') {
+            return <img src={`http://localhost:5000/${staticPath}`} alt="" />
+        }
+    }
+
+    
+    if (view === 'list') {
+        return (
+            <div>
+                {state
+                    ? <FileOpen img={staticPath} setstate={setstate} state={state} />
+                    : <div className={style.list}
+                        onClick={changePage}
+                    // onContextMenu={openContextMenu}
+                    // onContextMenu={openMenu}
+                    >
+                        {compareFiles()}
+                        {/* <img src={uploads(splitFile)} alt="" /> */}
+                        <span>{name}</span>
+                        <span>{date.slice(0, 10)}</span>
+                        <span>{type}</span>
+                        <span>{sizeOfFiles(size)}</span>
+                        {/* <button onClick={download}>download</button> */}
+                        <button onClick={detele}>Delete</button>
+                    </div>
+                }
+            </div>
+        );
+    }
+
+    if (view === 'grid') {
+        return (
+            <div>
+                {state
+                    ? <FileOpen img={staticPath} setstate={setstate}
+                        state={state} />
+                    : <div className={style.grid}
+                        onClick={changePage}
+                    // onContextMenu={openContextMenu}
+                    // onContextMenu={openMenu}
+                    >
+                        {/* {splited()} */}
+                        <img src={compareImg() 
+                            ? `http://localhost:5000/${staticPath}` 
+                            : uploads(splitFile)} alt="" />
+                        <span>{name}</span>
+                    </div>
+                }
+            </div>
+        );
+    }
+
 }
 
 export default FileList;
