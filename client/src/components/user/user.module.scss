@@ -1,10 +1,15 @@
 .user{
-    width: 320px;
-    margin: 40px auto 0;
-    border: 2px solid black;
-    padding: 10px 15px;
+    max-width: 680px;
+    margin: 40px auto 0px;
+
+    .user__wrap{
+        margin: 40px auto 0;
+        border: 2px solid black;
+        padding: 10px 15px;
+        display: flex;
+    }
     .wrap{
-        margin: 20px 0 20px;
+        margin: 20px 0px 20px 60px;
         display: flex;
         flex-direction: column;
         .circul__block{

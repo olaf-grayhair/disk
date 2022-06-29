@@ -10,7 +10,7 @@ const NavButton = ({name, _id, action, dirCount, id}) => {
         dispatch(remNav())
         
     }
-    console.log(dirCount, 'dirCount', id);
+
     return (
         <div className={style.navbutton} onClick={handleClick}>
             <div className={style.navigate}>

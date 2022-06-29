@@ -7,6 +7,7 @@ import style from './search.module.scss'
 const Search = () => {
     const [search, setSearch] = useState('');
     const dispatch = useDispatch()
+    
     const serchValue = (e) => {
         setSearch(e.target.value)
         dispatch(searchFile(e.target.value))
@@ -16,6 +17,7 @@ const Search = () => {
         setSearch('')
         dispatch(searchFile(''))
     }
+
     return (
         <div className={style.search}>
             <input type="text" 

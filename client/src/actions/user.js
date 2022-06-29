@@ -47,3 +47,28 @@ export const auth = () => {
         }
     }
 }
+
+export const uploadAvatar = (file) => {
+    return async (dispatch) => {
+        try{
+            const formData = new FormData()
+            formData.append('file', file)
+
+            const response = await instance.post(`files/avatar`, formData)
+            dispatch(log(response.data))
+        }catch(e) {
+            console.log(e.response.data.message, 'CATCH')
+        }
+    }
+}
+
+export const deleteAvatar = () => {
+    return async (dispatch) => {
+        try{
+            const response = await instance.delete(`files/avatar`)
+            dispatch(log(response.data))
+        }catch(e) {
+            console.log(e.response.data.message, 'CATCH')
+        }
+    }
+}

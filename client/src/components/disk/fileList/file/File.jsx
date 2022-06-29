@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import style from './file.module.scss'
 
 import { addNav, setCurrentDir } from '../../../../reducers/fileSlice';
-import { setContextMenu } from "../../../../reducers/userSlice";
+import { setContextMenu, setMenu } from "../../../../reducers/userSlice";
 
 import { useDispatch, useSelector } from 'react-redux';
 import ContextMenu from '../../../../utils/contextmenu/ContextMenu';
@@ -13,19 +13,19 @@ import { setShowFile } from '../../../../reducers/settingsSlice';
 import { uploads } from '../../../../utils/uploads';
 
 
-const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath }) => {
+const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,menu }) => {
     const dispatch = useDispatch()
     const view = useSelector(state => state.settings.view)
     const showFile = useSelector(state => state.settings.showFile)
     const splitFile = name.split('.', -1).pop()
 
     const [points, setPoints] = useState({ x: 0, y: 0 })
-    const openContextMenu = (e) => {
-        e.preventDefault()
-        setMenu(_id, name)
-        dispatch(setContextMenu(true))
-        setPoints({ x: e.pageX, y: e.pageY })
-    }
+    // const openContextMenu = (e) => {
+    //     e.preventDefault()
+    //     setMenu(_id, name)
+    //     dispatch(setMenu(true))
+    //     setPoints({ x: e.pageX, y: e.pageY })
+    // }
 
     const [state, setstate] = useState(false);
     const changePage = (e) => {
@@ -38,16 +38,6 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath }
             setstate(true)
             dispatch(setShowFile(true))
         }
-        // else{
-        //     setMenu(false)
-        //     console.log('else');
-        // }
-
-        // if (e.type === "click") {
-        //     console.log("Left click");
-        //     setMenu(false)
-        //     dispatch(setContextMenu(false))
-        // } 
     }
 
     // const openMenu = (e) => {
@@ -97,6 +87,11 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath }
         }
     }
 
+    const openContextMenu = (e) => {
+        e.preventDefault()
+        openMenu(e)
+        dispatch(setContextMenu({_id, name, staticPath}))
+    }
     
     if (view === 'list') {
         return (
@@ -105,17 +100,14 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath }
                     ? <FileOpen img={staticPath} setstate={setstate} state={state} />
                     : <div className={style.list}
                         onClick={changePage}
-                    // onContextMenu={openContextMenu}
-                    // onContextMenu={openMenu}
+                        onContextMenu={openContextMenu}
                     >
-                        {compareFiles()}
-                        {/* <img src={uploads(splitFile)} alt="" /> */}
+                        {/* {compareFiles()} */}
+                        <img src={uploads(splitFile)} alt="" />
                         <span>{name}</span>
                         <span>{date.slice(0, 10)}</span>
                         <span>{type}</span>
                         <span>{sizeOfFiles(size)}</span>
-                        {/* <button onClick={download}>download</button> */}
-                        <button onClick={detele}>Delete</button>
                     </div>
                 }
             </div>
@@ -130,8 +122,7 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath }
                         state={state} />
                     : <div className={style.grid}
                         onClick={changePage}
-                    // onContextMenu={openContextMenu}
-                    // onContextMenu={openMenu}
+                        onContextMenu={openContextMenu}
                     >
                         {/* {splited()} */}
                         <img src={compareImg() 

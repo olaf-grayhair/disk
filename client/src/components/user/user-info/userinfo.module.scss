@@ -1,0 +1,25 @@
+.userinfo{
+    .img{
+        width: 280px;
+        height: 280px;
+        background-color: gray;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .avatar{
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        input{
+            display: none;
+          }
+          label{
+            cursor:pointer;
+            background-color: aquamarine;
+            padding: 5px;
+          }
+    }
+}

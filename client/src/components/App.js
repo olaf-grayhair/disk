@@ -9,16 +9,16 @@ import { auth } from "../actions/user";
 import Disk from "./disk/Disk";
 import User from "./user/User";
 import Home from '../pages/home/Home'
-import { setContextMenu } from "../reducers/userSlice";
+import { showMenu } from "../reducers/userSlice";
 
 
 function App() {
   const {isAuth, user} = useSelector((state) => state.user)
   const dispatch = useDispatch()
-  const contextMenu = useSelector((state) => state.user.contextMenu)
+  const showContextMenu = useSelector((state) => state.user.showContextMenu)
   
   const closeMenu = (e) => {
-    dispatch(setContextMenu(false))
+    dispatch(showMenu(false))
     console.log(e.target.value, 'APP');
   }
 

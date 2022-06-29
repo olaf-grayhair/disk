@@ -25,7 +25,6 @@ const Disk = () => {
 /////////
     useEffect(() => {
         dispatch(getFiles(currentDir, sort))
-        console.log('useEffect', sort);
     }, [currentDir, sort]);
 
     const openPopup = () => {

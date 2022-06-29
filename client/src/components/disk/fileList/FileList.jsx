@@ -4,7 +4,7 @@ import { dowloadFile, uploadFile } from '../../../actions/file';
 import style from './filelist.module.scss'
 import File from './file/File'
 import ContextMenu from '../../../utils/contextmenu/ContextMenu';
-import { setContextMenu } from '../../../reducers/userSlice';
+import { showMenu } from '../../../reducers/userSlice';
 import EmptyFolder from '../../../utils/empty-folder/EmptyFolder';
 import Loader from '../../../utils/loader/Loader';
 
@@ -13,7 +13,7 @@ const FileList = () => {
     const [dragEnter, setDragEnter] = useState(false);
     const dispatch = useDispatch()
     const {files, currentDir} = useSelector((state) => state.file)
-    const contextMenu = useSelector((state) => state.user.contextMenu)
+    const showContextMenu = useSelector((state) => state.user.showContextMenu)
     const loader = useSelector(state => state.settings.loader)
     const view = useSelector(state => state.settings.view)
 
@@ -38,14 +38,10 @@ const FileList = () => {
         setDragEnter(false)
     }
     /////
-    const [menu, setMenu] = useState({id: null, name: null})
     const [points, setPoints] = useState({ x: 0, y: 0 })
 
-    const openMenu = (e, id, name) => {
-        e.preventDefault()
-        console.log(e.target.parent, 'ID');
-        setMenu(id, name)
-        dispatch(setContextMenu(true))
+    const openMenu = (e) => {
+        dispatch(showMenu(true))
         setPoints({ x: e.pageX, y: e.pageY })
     }
 
@@ -56,8 +52,8 @@ const FileList = () => {
       }
 
     const directories = files.map(dir => <File {...dir} key={dir._id} 
-        openMenu={openMenu}
-        setMenu={setMenu}
+        openMenu={openMenu} onClick={e => e.stopPropagation()}
+
     />)
     const content = directories.length >= 1 ? directories : <EmptyFolder/>
 
@@ -87,7 +83,7 @@ const FileList = () => {
                         <span>Upload files...</span>
                     </div>
                 }
-                {contextMenu ? <ContextMenu top={points.y} left={points.x} action={closeMenu} files={files}/>  : ''}
+                {showContextMenu && <ContextMenu top={points.y} left={points.x}/>}
             </div>
         );
     }
@@ -112,7 +108,7 @@ const FileList = () => {
                         <span>Upload files...</span>
                     </div>
                 }
-                {contextMenu ? <ContextMenu top={points.y} left={points.x} action={closeMenu} files={files}/>  : ''}
+                {showContextMenu && <ContextMenu top={points.y} left={points.x}/>}
             </div>
         );
     }

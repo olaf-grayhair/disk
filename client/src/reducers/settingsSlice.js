@@ -8,6 +8,7 @@ const settingsSlice = createSlice({
         loader: false,
         view: 'list',
         showFile: false,
+        
     },
 
     reducers: {
@@ -20,6 +21,7 @@ const settingsSlice = createSlice({
         setShowFile(state, actions) {
             state.showFile = actions.payload
         },
+
     }
 })
 

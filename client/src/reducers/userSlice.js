@@ -7,8 +7,8 @@ const userSlice = createSlice({
     initialState: {
         user: [],
         isAuth: false,
-        count: null,
-        contextMenu: false,
+        showContextMenu: false,
+        contextMenu: {id: null, name: null, staticPath: null}
     },
 
     reducers: {
@@ -16,19 +16,19 @@ const userSlice = createSlice({
             state.user = action.payload
             state.isAuth = true
         },
-        increment(state) {
-            state.count = state.count + 1
-        },
         logout(state, action) {
             localStorage.removeItem('token')
             state.user = {}
             state.isAuth = false
         },
-        setContextMenu(state, action) {
-            state.contextMenu = action.payload
-        }
+        showMenu(state, action) {
+            state.showContextMenu = action.payload
+        },
+        setContextMenu(state, actions) {
+            state.contextMenu = actions.payload
+        },
     }
 })
 
 export default userSlice.reducer
-export const {log, increment, logout, setContextMenu} = userSlice.actions
+export const {log, increment, logout, showMenu, setContextMenu} = userSlice.actions
