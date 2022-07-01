@@ -131,7 +131,10 @@ class FileController {
 
     async deleteFile(req, res) {
         try {
+            // console.log(req.id, 'query', req.user.id);
+
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
+            // console.log(file, 'delete');
             if (!file) {
                 return res.status(400).json({message: 'file not found'})
             }
@@ -181,6 +184,51 @@ class FileController {
         } catch (e) {
             console.log(e)
             return res.status(400).json({message: 'Delete avatar error'})
+        }
+    }
+
+    // async rename(req, res) {
+    //     try {
+    //         // console.log(req.query.id, 'query', req.user.id);
+    //         const {name, type, parent} = req.body
+    //         const userId = req.user.id
+    //         const file = await File.findOne({_id: req.query.id, user: req.user.id})
+
+    //         console.log(name, userId, file, '___RENAME___');
+    //         const updateFile = await File.updateOne({user: userId},{$set: {name: name, path: name}})
+    //         if (!file) {
+    //             return res.status(400).json({message: 'file not found'})
+    //         }
+
+    //         fileService.renameFile(file, name)
+
+
+    //         await file.save()
+    //         return res.json(updateFile)
+    //     } catch (e) {
+    //         console.log(e)
+    //         return res.status(400).json({message : 'rename error'})
+    //     }
+    // }
+
+    async rename(req, res) {
+        try {
+            const file = req.body
+            if(!file._id) {
+                return res.status(400).json({message : 'no ID'})
+            }
+            const oldFile = await File.findOne({_id: file._id})
+            console.log(oldFile.path, '__parentFile__');
+            console.log(file.path, '__file__');
+
+            const updateFile = await File.findByIdAndUpdate(file._id, file, {new: true})
+
+            fileService.renameFile(oldFile, file.path)
+
+            return res.json(updateFile)
+        } catch (e) {
+            console.log(e)
+            return res.status(400).json({message : 'rename error'})
         }
     }
     

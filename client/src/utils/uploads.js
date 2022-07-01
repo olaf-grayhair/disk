@@ -5,7 +5,8 @@ import rar from '../assets/images/rar.png'
 import mp4 from '../assets/images/mp4.png'
 
 
-export const uploads = (file) => {
+export const uploads = (item) => {
+    let file = item.toLowerCase()
     if(file === 'png' || file === 'jpg') {
         return img
     }

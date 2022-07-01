@@ -13,4 +13,7 @@ router.get('', authMiddleware, FileController.getFiles)
 router.delete('/', authMiddleware, FileController.deleteFile)
 router.delete('/avatar', authMiddleware, FileController.deleteAvatar)
 
+router.put('/', authMiddleware, FileController.rename)
+
+
 module.exports = router

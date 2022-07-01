@@ -10,6 +10,7 @@ import Disk from "./disk/Disk";
 import User from "./user/User";
 import Home from '../pages/home/Home'
 import { showMenu } from "../reducers/userSlice";
+import { popupMenuState } from "../reducers/fileSlice";
 
 
 function App() {
@@ -19,7 +20,6 @@ function App() {
   
   const closeMenu = (e) => {
     dispatch(showMenu(false))
-    console.log(e.target.value, 'APP');
   }
 
   useEffect(() => {

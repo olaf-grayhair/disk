@@ -1,6 +1,6 @@
 import {React, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFiles, pushFile, uploadFile } from '../../actions/file';
+import { createDir, getFiles, renameFile, uploadFile } from '../../actions/file';
 import { addFile, popupState, remNav, setCurrentDir } from '../../reducers/fileSlice';
 import NavButton from '../../utils/nav-button/NavButton';
 import LoadFile from '../load-files/LoadFile';
@@ -35,8 +35,8 @@ const Disk = () => {
         dispatch(popupState(false))
     }
 
-    const createDir = (dirName, currentDir) => {
-        dispatch(pushFile(dirName, currentDir))
+    const create = (dirName, currentDir) => {
+        dispatch(createDir(dirName, currentDir))
     }
 
 
@@ -76,6 +76,8 @@ const Disk = () => {
                     <LoadFile action={uploads}/>
                 </div>
                 <div className={style.btn__right}>
+                <button onClick={e => renameFile('name')}>rename</button>
+
                     <Sort setSort={setSort}/>
                     <button className={style.btn} 
                     onClick={setListView}>
@@ -92,8 +94,9 @@ const Disk = () => {
             <Popup 
                 popupDisplay={popupDisplay}
                 cansel={closePopup}
-                create={createDir}
+                create={create}
                 currentDir={currentDir}
+                popupName={'New folder'}
             />
         </div>
     );

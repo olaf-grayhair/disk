@@ -1,17 +1,36 @@
 import {React, useState} from 'react';
-import style from './popup.module.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { renameFile } from '../../actions/file';
+import style from './popupmenu.module.scss'
 
-const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
+const PopupMenu = ({popupDisplay, cansel, create, currentDir, popupName}) => {
     const [dirName, setDirName] = useState('');
+    const { name, _id, staticPath } = useSelector(state => state.user.contextMenu)
+
+    const user = useSelector(state => state.user.user)
+
+    const dispatch = useDispatch()
+
     const onHandler = (e) => {
         setDirName(e.target.value)
     }
     
     const createDir = () => {
-        create(dirName, currentDir)
+        console.log('create');
+        // create(name, _id)
+        dispatch(renameFile(dirName, _id, user.id))
+        
+        // create(dirName, currentDir)
         setDirName('')
         cansel()
     }
+    let t = staticPath;
+    t = t.substr(1, t.lastIndexOf("\\"));
+    
+    let res = staticPath.split("\\").pop()
+    console.log(staticPath, '____', res);
+    console.log(t, 'popupMenu');
+
 
     return (
         <div 
@@ -21,7 +40,7 @@ const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
             <div className={style.popup} onClick={e => e.stopPropagation()}>
                 <h2>{popupName}</h2>
                 <input type="text" 
-                    placeholder='name' 
+                    placeholder={name} 
                     value={dirName}
                     onChange={onHandler}
                     />
@@ -34,4 +53,4 @@ const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
     );
 }
 
-export default Popup;
+export default PopupMenu;

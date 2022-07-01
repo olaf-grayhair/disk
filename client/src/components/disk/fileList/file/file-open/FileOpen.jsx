@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setShowFile } from '../../../../../reducers/settingsSlice';
+import { API_URL } from '../../../../../utils/urls';
 import style from './fileopen.module.scss'
 
 const FileOpen = ({img, setstate, state}) => {
@@ -15,7 +16,7 @@ const FileOpen = ({img, setstate, state}) => {
         <div className={style.inactive}  
             onClick={hide}>
             <div className={style.img} onClick={e => e.stopPropagation()}>
-                <img src={`http://localhost:5000/${img}`} alt="" />
+                <img src={API_URL + img} alt="" />
             </div>
         </div>
     );

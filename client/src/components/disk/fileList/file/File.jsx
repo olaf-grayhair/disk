@@ -1,16 +1,18 @@
 import { React, useState, useEffect } from 'react';
 import style from './file.module.scss'
 
-import { addNav, setCurrentDir } from '../../../../reducers/fileSlice';
+import { addNav, popupMenuState, setCurrentDir } from '../../../../reducers/fileSlice';
 import { setContextMenu, setMenu } from "../../../../reducers/userSlice";
 
 import { useDispatch, useSelector } from 'react-redux';
 import ContextMenu from '../../../../utils/contextmenu/ContextMenu';
-import { deleteFile, dowloadFile } from '../../../../actions/file';
+import { deleteFile, dowloadFile, renameFile } from '../../../../actions/file';
 import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
 import FileOpen from './file-open/FileOpen'
 import { setShowFile } from '../../../../reducers/settingsSlice';
 import { uploads } from '../../../../utils/uploads';
+import { API_URL } from '../../../../utils/urls';
+import PopupMenu from '../../../popupMenu/PopupMenu';
 
 
 const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,menu }) => {
@@ -20,44 +22,21 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
     const splitFile = name.split('.', -1).pop()
 
     const [points, setPoints] = useState({ x: 0, y: 0 })
-    // const openContextMenu = (e) => {
-    //     e.preventDefault()
-    //     setMenu(_id, name)
-    //     dispatch(setMenu(true))
-    //     setPoints({ x: e.pageX, y: e.pageY })
-    // }
 
     const [state, setstate] = useState(false);
     const changePage = (e) => {
-        if (type === 'dir') {
+        let fileType = type.toLowerCase()
+        if (fileType === 'dir') {
             dispatch(setCurrentDir(_id))
             const pushItem = { name, _id }
             dispatch(addNav(pushItem))
         }
-        if (type === 'jpg' || type === 'png') {
+        if (fileType === 'jpg' || fileType === 'png') {
             setstate(true)
             dispatch(setShowFile(true))
         }
     }
 
-    // const openMenu = (e) => {
-    //     if(type !== 'dir') {
-    //         e.preventDefault()
-    //         // dispatch(setContextMenu(true))
-    //         if (e.type === "contextmenu") {
-    //             console.log("Right click");
-    //             setMenu(!menu)
-    //             dispatch(setContextMenu(true))
-    //         }
-    //         setPoints({ x: e.pageX, y: e.pageY })
-    //     }
-    //     console.log(menu, 'menu', contextMenu, 'contextMenu');
-    // }
-
-    // const closeMenu = (e) => {
-    //     console.log(e.type, 'e.type');
-    //     setMenu(false)
-    //   }
 
     const download = (e) => {
         e.stopPropagation()
@@ -71,7 +50,7 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
     }
 
     const compareImg = () => {
-        const set = staticPath.split('.', 2).pop()
+        const set = staticPath.split('.', 2).pop().toLowerCase()
         if(set === 'jpg' || set === 'png') {
             return true
             // return `http://localhost:5000/${path}`
@@ -91,8 +70,20 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
         e.preventDefault()
         openMenu(e)
         dispatch(setContextMenu({_id, name, staticPath}))
+
+        // dispatch(popupMenuState(false))
     }
-    
+    ///popup
+    const { popupMenu } = useSelector(state => state.file)
+
+    const closePopup = () => {
+        dispatch(popupMenuState(false))
+    }
+
+    const renamePopup = (name, id) => {
+        renameFile(name, id)
+    }
+
     if (view === 'list') {
         return (
             <div>
@@ -103,7 +94,9 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
                         onContextMenu={openContextMenu}
                     >
                         {/* {compareFiles()} */}
-                        <img src={uploads(splitFile)} alt="" />
+                        <img src={compareImg() 
+                            ? API_URL + staticPath 
+                            : uploads(splitFile)} alt={name} />
                         <span>{name}</span>
                         <span>{date.slice(0, 10)}</span>
                         <span>{type}</span>
@@ -124,13 +117,18 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
                         onClick={changePage}
                         onContextMenu={openContextMenu}
                     >
-                        {/* {splited()} */}
                         <img src={compareImg() 
-                            ? `http://localhost:5000/${staticPath}` 
-                            : uploads(splitFile)} alt="" />
+                            ? API_URL + staticPath 
+                            : uploads(splitFile)} alt={name} />
                         <span>{name}</span>
                     </div>
                 }
+              <PopupMenu 
+              popupName={'Change name'} 
+              popupDisplay={popupMenu}
+              create={renamePopup}
+              cansel={closePopup}
+               />
             </div>
         );
     }

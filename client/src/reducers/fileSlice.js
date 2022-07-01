@@ -8,6 +8,7 @@ const fileSlice = createSlice({
         files: [],
         currentDir: null,
         popupDisplay: false,
+        popupMenu: false,
         dirStack: [{
             name: "My disk",
             _id: null,
@@ -28,6 +29,9 @@ const fileSlice = createSlice({
         popupState(state, action) {
             state.popupDisplay = action.payload
         },
+        popupMenuState(state, action) {
+            state.popupMenu = action.payload
+        },
         addNav(state, action) {
             state.dirStack.push(action.payload)
             state.dirCount = state.dirCount + 1
@@ -38,10 +42,13 @@ const fileSlice = createSlice({
         },
         delFile(state, action) {
             state.files = state.files.filter(file => file._id !== action.payload)
+        },
+        renameAction(state, action) {
+            state.files = state.files.map(file => file._id === action.payload._id ? file = action.payload : file)
         }
     }
 })
 
 export default fileSlice.reducer
-export const {setFiles, setCurrentDir, addFile, popupState, addNav, remNav, delFile} = fileSlice.actions
+export const {setFiles, setCurrentDir, addFile, popupState, addNav, remNav, delFile, popupMenuState, renameAction} = fileSlice.actions
 // cold@777.mail.ru

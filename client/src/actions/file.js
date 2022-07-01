@@ -1,4 +1,4 @@
-import { addFile, delFile, setFiles } from '../reducers/fileSlice';
+import { addFile, delFile, renameAction, setFiles } from '../reducers/fileSlice';
 import { loading, setView } from '../reducers/settingsSlice';
 import { instance } from '../utils/instance';
 
@@ -29,7 +29,7 @@ export const getFiles = (dirId, sort) => {
     }
 }
 
-export const pushFile = (name, dirId) => {
+export const createDir = (name, dirId) => {
     return async (dispatch) => {
         try{
             const response = await instance.post(`files/`, {name, type: 'dir', parent: dirId,})
@@ -109,6 +109,7 @@ export const deleteFile = (id) => {
 
 export const searchFile = (name) => {
     return async (dispatch) => {
+        console.log(name, 'search');
         let url = `files/search?search=${name}`
         if(name == '') url = 'files'
         try{
@@ -121,3 +122,34 @@ export const searchFile = (name) => {
     }
 }
 
+export const renameFile = (name, id, userId) => {
+    return async (dispatch) => {
+        const file = {
+            name, 
+            path: name, // 1/name
+            staticPath: userId + '\\' + name, 
+            _id: id
+        }
+        console.log('fetch', file);
+        try{
+            const response = await instance.put(`files`, 
+            file)                               
+            dispatch(renameAction(response.data))
+            console.log(response.data);
+        }catch(e) {
+            console.log(e.response, 'CATCH')
+        }
+    }
+}
+
+// export const renameFile = (name, id, userId) => {
+//     console.log(name, id);
+//     const file = {
+//         name, 
+//         path: name, 
+//         staticPath: userId + '\\' + name, 
+//         _id: id
+//     }
+//     const response = instance.put(`files`, file)
+//     console.log(response);
+// }
