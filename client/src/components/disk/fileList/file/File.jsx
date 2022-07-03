@@ -9,13 +9,14 @@ import ContextMenu from '../../../../utils/contextmenu/ContextMenu';
 import { deleteFile, dowloadFile, renameFile } from '../../../../actions/file';
 import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
 import FileOpen from './file-open/FileOpen'
-import { setShowFile } from '../../../../reducers/settingsSlice';
+import { setPopupLink, setPopupState, setShowFile } from '../../../../reducers/settingsSlice';
 import { uploads } from '../../../../utils/uploads';
 import { API_URL } from '../../../../utils/urls';
 import PopupMenu from '../../../popupMenu/PopupMenu';
+import PopupLink from '../../../popupLink/PopupLink';
 
 
-const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,menu }) => {
+const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent }) => {
     const dispatch = useDispatch()
     const view = useSelector(state => state.settings.view)
     const showFile = useSelector(state => state.settings.showFile)
@@ -78,11 +79,15 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
 
     const closePopup = () => {
         dispatch(popupMenuState(false))
+        dispatch(setPopupState(false))
     }
 
     const renamePopup = (name, id) => {
         renameFile(name, id)
     }
+    //////popupLink
+    const { popupLinkstate } = useSelector(state => state.settings)
+
 
     if (view === 'list') {
         return (
@@ -128,6 +133,14 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
               popupDisplay={popupMenu}
               create={renamePopup}
               cansel={closePopup}
+              parent={parent}
+              path={path}
+               />
+               <PopupLink
+                popupName={'Get link'} 
+                popupDisplay={popupLinkstate}
+                create={renamePopup}
+                cansel={closePopup}
                />
             </div>
         );
@@ -135,4 +148,4 @@ const FileList = ({ name, type, size, date, _id, openMenu, setMenu, staticPath,m
 
 }
 
-export default FileList;
+export default File;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { renameFile } from '../../actions/file';
 import style from './popupmenu.module.scss'
 
-const PopupMenu = ({popupDisplay, cansel, create, currentDir, popupName}) => {
+const PopupMenu = ({popupDisplay, cansel, path, popupName, parent}) => {
     const [dirName, setDirName] = useState('');
     const { name, _id, staticPath } = useSelector(state => state.user.contextMenu)
 
@@ -11,26 +11,15 @@ const PopupMenu = ({popupDisplay, cansel, create, currentDir, popupName}) => {
 
     const dispatch = useDispatch()
 
-    const onHandler = (e) => {
+    const inputName = (e) => {
         setDirName(e.target.value)
     }
     
     const createDir = () => {
-        console.log('create');
-        // create(name, _id)
-        dispatch(renameFile(dirName, _id, user.id))
-        
-        // create(dirName, currentDir)
+        dispatch(renameFile(dirName, _id, user.id, parent, staticPath, path))
         setDirName('')
         cansel()
     }
-    let t = staticPath;
-    t = t.substr(1, t.lastIndexOf("\\"));
-    
-    let res = staticPath.split("\\").pop()
-    console.log(staticPath, '____', res);
-    console.log(t, 'popupMenu');
-
 
     return (
         <div 
@@ -42,7 +31,7 @@ const PopupMenu = ({popupDisplay, cansel, create, currentDir, popupName}) => {
                 <input type="text" 
                     placeholder={name} 
                     value={dirName}
-                    onChange={onHandler}
+                    onChange={inputName}
                     />
                 <div className={style.btn__block}>
                     <button onClick={cansel}>Cancel</button>

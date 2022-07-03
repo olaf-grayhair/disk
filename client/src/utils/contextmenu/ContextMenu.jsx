@@ -8,11 +8,13 @@ import { popupMenuState, popupState } from '../../reducers/fileSlice';
 import { showMenu } from '../../reducers/userSlice';
 import { API_URL } from '../urls';
 import style from './contextmenu.module.scss'
+import { setPopupLink, setPopupState } from '../../reducers/settingsSlice';
+import PopupLink from '../../components/popupLink/PopupLink';
 
 const ContextMenu = ({ top, left }) => {
     const dispatch = useDispatch()
     const { name, _id, staticPath } = useSelector(state => state.user.contextMenu)
-    const { popupMenu } = useSelector(state => state.file)
+    const { popupLink } = useSelector(state => state.settings)
 
     const detele = (e) => {
         e.stopPropagation()
@@ -28,10 +30,11 @@ const ContextMenu = ({ top, left }) => {
 
     const getLink = (e) => {
         e.stopPropagation()
-        const a = API_URL + staticPath
+        dispatch(setPopupState(true))
+        dispatch(setPopupLink(API_URL + staticPath))
         dispatch(showMenu(false))
-        console.log(a);
     }
+
 
     const styleSetting = {
         top: top - 165,

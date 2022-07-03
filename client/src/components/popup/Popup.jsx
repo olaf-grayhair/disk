@@ -3,7 +3,7 @@ import style from './popup.module.scss'
 
 const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
     const [dirName, setDirName] = useState('');
-    const onHandler = (e) => {
+    const inputName = (e) => {
         setDirName(e.target.value)
     }
     
@@ -23,7 +23,7 @@ const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
                 <input type="text" 
                     placeholder='name' 
                     value={dirName}
-                    onChange={onHandler}
+                    onChange={inputName}
                     />
                 <div className={style.btn__block}>
                     <button onClick={cansel}>Cancel</button>

@@ -65,6 +65,9 @@ class FileController {
         try {
             const file = req.files.file
 
+            // const typeOfFile = file.name.match(/\.([a-zA-Z]+)$/)[1]
+            // const file.name = Uuid.v4() + "." + typeOfFile
+
             const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
             const user = await User.findOne({_id: req.user.id})
 
@@ -84,7 +87,7 @@ class FileController {
                 staticPath = `${user._id}\\${file.name}`
             }
 
-            console.log(staticPath, 'upload');
+            console.log('----', staticPath, 'upload', path);
             if (fs.existsSync(path)) {
                 return res.status(400).json({message: 'File already exist'})
             }

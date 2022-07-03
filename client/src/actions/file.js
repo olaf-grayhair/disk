@@ -1,6 +1,7 @@
 import { addFile, delFile, renameAction, setFiles } from '../reducers/fileSlice';
 import { loading, setView } from '../reducers/settingsSlice';
 import { instance } from '../utils/instance';
+import { slicePath } from '../utils/slicePath';
 
 
 export const getFiles = (dirId, sort) => {
@@ -122,15 +123,31 @@ export const searchFile = (name) => {
     }
 }
 
-export const renameFile = (name, id, userId) => {
+export const renameFile = (name, id, userId, parent, staticPath, path) => {
     return async (dispatch) => {
-        const file = {
-            name, 
-            path: name, // 1/name
-            staticPath: userId + '\\' + name, 
-            _id: id
+        let file = {}
+        let fullPath = slicePath(staticPath)
+        let fullName = slicePath(path)
+        console.log(fullName, 'staticPath');
+        console.log(fullPath, 'fullPath');
+
+        if(parent) {
+            console.log('???');
+            file = {
+                name: name,
+                path: fullName + '\\' + name,
+                staticPath: fullPath + '\\' + name,
+                _id: id
+            }
+        }else {
+            file = {
+                name, 
+                path: name, // 1/name???
+                staticPath: userId + '\\' + name, 
+                _id: id
+            }
         }
-        console.log('fetch', file);
+
         try{
             const response = await instance.put(`files`, 
             file)                               
@@ -142,14 +159,3 @@ export const renameFile = (name, id, userId) => {
     }
 }
 
-// export const renameFile = (name, id, userId) => {
-//     console.log(name, id);
-//     const file = {
-//         name, 
-//         path: name, 
-//         staticPath: userId + '\\' + name, 
-//         _id: id
-//     }
-//     const response = instance.put(`files`, file)
-//     console.log(response);
-// }

@@ -8,7 +8,8 @@ const settingsSlice = createSlice({
         loader: false,
         view: 'list',
         showFile: false,
-        
+        popupLink: false,
+        popupLinkstate: false,
     },
 
     reducers: {
@@ -21,9 +22,15 @@ const settingsSlice = createSlice({
         setShowFile(state, actions) {
             state.showFile = actions.payload
         },
+        setPopupState(state, actions) {
+            state.popupLinkstate = actions.payload
+        },
+        setPopupLink(state, actions) {
+            state.popupLink = actions.payload
+        },
 
     }
 })
 
 export default settingsSlice.reducer
-export const {loading, setView, setShowFile} = settingsSlice.actions
+export const {loading, setView, setShowFile, setPopupLink, setPopupState} = settingsSlice.actions
