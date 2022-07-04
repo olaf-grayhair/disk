@@ -5,15 +5,15 @@ import { addNav, popupMenuState, setCurrentDir } from '../../../../reducers/file
 import { setContextMenu, setMenu } from "../../../../reducers/userSlice";
 
 import { useDispatch, useSelector } from 'react-redux';
-import ContextMenu from '../../../../utils/contextmenu/ContextMenu';
 import { deleteFile, dowloadFile, renameFile } from '../../../../actions/file';
 import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
 import FileOpen from './file-open/FileOpen'
 import { setPopupLink, setPopupState, setShowFile } from '../../../../reducers/settingsSlice';
 import { uploads } from '../../../../utils/uploads';
 import { API_URL } from '../../../../utils/urls';
-import PopupMenu from '../../../popupMenu/PopupMenu';
-import PopupLink from '../../../popupLink/PopupLink';
+import Popup from '../../../popup/Popup';
+
+import { FcBookmark } from 'react-icons/fc';
 
 
 const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent }) => {
@@ -22,9 +22,8 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const showFile = useSelector(state => state.settings.showFile)
     const splitFile = name.split('.', -1).pop()
 
-    const [points, setPoints] = useState({ x: 0, y: 0 })
-
     const [state, setstate] = useState(false);
+    ///chandgePAge
     const changePage = (e) => {
         let fileType = type.toLowerCase()
         if (fileType === 'dir') {
@@ -37,33 +36,11 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
             dispatch(setShowFile(true))
         }
     }
-
-
-    const download = (e) => {
-        e.stopPropagation()
-        dowloadFile(_id, name)
-        console.log(_id);
-    }
-
-    const detele = (e) => {
-        e.stopPropagation()
-        dispatch(deleteFile(_id))
-    }
-
+    ///chandgePAge
     const compareImg = () => {
         const set = staticPath.split('.', 2).pop().toLowerCase()
-        if(set === 'jpg' || set === 'png') {
+        if(set === 'jpg' || set === 'png' || set === 'jpeg') {
             return true
-            // return `http://localhost:5000/${path}`
-        }
-    }
-    const compareFiles = () => {
-        const set = staticPath.split('.', 2).pop()
-        if(set === 'txt') {
-            return <pre>{`http://localhost:5000/62b4381b44cf10f7eee4ac5e/static/github.TXT`}</pre>
-        }
-        if(set === 'jpg' || set === 'png') {
-            return <img src={`http://localhost:5000/${staticPath}`} alt="" />
         }
     }
 
@@ -71,24 +48,41 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         e.preventDefault()
         openMenu(e)
         dispatch(setContextMenu({_id, name, staticPath}))
-
         // dispatch(popupMenuState(false))
     }
+
     ///popup
     const { popupMenu } = useSelector(state => state.file)
+    const user = useSelector(state => state.user.user)
+    const contextMenu = useSelector(state => state.user.contextMenu)
 
     const closePopup = () => {
         dispatch(popupMenuState(false))
         dispatch(setPopupState(false))
     }
 
-    const renamePopup = (name, id) => {
-        renameFile(name, id)
+    const rename = (dirName) => {
+        dispatch(renameFile(dirName, contextMenu._id, user.id, parent, contextMenu.staticPath, path))
+        dispatch(popupMenuState(false))
+        dispatch(setPopupState(false))
     }
+
     //////popupLink
     const { popupLinkstate } = useSelector(state => state.settings)
+    const link = useSelector(state => state.settings.popupLink)
 
+    const copyLink = async () => {
+        await navigator.clipboard.writeText(link);
+        console.log(link, 'dirName');
+        alert('Text copied');
+      }
 
+    //////markFile
+    const markFile = useSelector(state => state.settings.markFiles)
+    let arr = markFile.map(file => file === _id 
+        ? <FcBookmark size={'1.4em'} key={_id}/> : '')
+    // console.log(arr, 'markFile', markFile);
+    
     if (view === 'list') {
         return (
             <div>
@@ -108,6 +102,22 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                         <span>{sizeOfFiles(size)}</span>
                     </div>
                 }
+              <Popup
+              popupName={'Change name'} 
+              cansel={closePopup}
+              popupDisplay={popupMenu}
+              name={contextMenu.name}
+              action={rename}
+              btnName={'rename'}
+               />
+               <Popup
+                popupName={'Get link'} 
+                popupDisplay={popupLinkstate}
+                cansel={closePopup}
+                action={copyLink}
+                name={link}
+                btnName={'copy'}
+               />
             </div>
         );
     }
@@ -126,21 +136,24 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                             ? API_URL + staticPath 
                             : uploads(splitFile)} alt={name} />
                         <span>{name}</span>
+                        <span className={style.mark}>{arr}</span>
                     </div>
                 }
-              <PopupMenu 
+              <Popup
               popupName={'Change name'} 
-              popupDisplay={popupMenu}
-              create={renamePopup}
               cansel={closePopup}
-              parent={parent}
-              path={path}
+              popupDisplay={popupMenu}
+              name={contextMenu.name}
+              action={rename}
+              btnName={'rename'}
                />
-               <PopupLink
+               <Popup
                 popupName={'Get link'} 
                 popupDisplay={popupLinkstate}
-                create={renamePopup}
                 cansel={closePopup}
+                action={copyLink}
+                name={link}
+                btnName={'copy'}
                />
             </div>
         );

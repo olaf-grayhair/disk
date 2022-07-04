@@ -36,6 +36,7 @@
     flex-direction: column;
     border: 1px solid $popup;
     margin: 7.5px 15px 7.5px 0px;
+    position: relative;
 
     img{
         margin-bottom: 10px;
@@ -50,5 +51,11 @@
         white-space: nowrap; /* Текст не переносится */
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .mark{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        text-align: right;
     }
 }

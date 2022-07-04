@@ -45,17 +45,13 @@ const FileList = () => {
         setPoints({ x: e.pageX, y: e.pageY })
     }
 
-    const closeMenu = (e) => {
-        e.stopPropagation()
-        // dowloadFile()
-        console.log('close');
-      }
-
-    const directories = files.map(dir => <File {...dir} key={dir._id} 
-        openMenu={openMenu} onClick={e => e.stopPropagation()}
-
+    const directories = files && files.map(dir => <File {...dir} 
+        key={dir._id} 
+        openMenu={openMenu} 
+        onClick={e => e.stopPropagation()}
     />)
-    const content = directories.length >= 1 ? directories : <EmptyFolder/>
+
+    const content = directories && directories.length >= 1 ? directories : <EmptyFolder/>
 
 
     if(view === 'list') {

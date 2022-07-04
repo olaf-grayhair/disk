@@ -7,11 +7,11 @@ import LoadFile from '../load-files/LoadFile';
 import Popup from '../popup/Popup';
 import style from './disk.module.scss'
 import FileList from './fileList/FileList'
-import File from './fileList/file/File'
 import Sort from '../../utils/sort/Sort';
 import { FaListUl } from 'react-icons/fa';
 import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { setView } from '../../reducers/settingsSlice';
+import Button from '../../UI/button/Button';
 
 
 const Disk = () => {
@@ -25,8 +25,9 @@ const Disk = () => {
 /////////
     useEffect(() => {
         dispatch(getFiles(currentDir, sort))
+        console.log('useEffect');
     }, [currentDir, sort]);
-
+    ///popup
     const openPopup = () => {
         dispatch(popupState(true))
     }
@@ -35,10 +36,15 @@ const Disk = () => {
         dispatch(popupState(false))
     }
 
-    const create = (dirName, currentDir) => {
-        dispatch(createDir(dirName, currentDir))
-    }
+    // const create = (dirName, currentDir) => {
+    //     dispatch(createDir(dirName, currentDir))
+    // }
 
+    const createDirectory = (dirName, currentDir) => {
+        dispatch(createDir(dirName, currentDir))
+        dispatch(popupState(false))
+    }
+    ///back
 
     const back = () => {
         if (dirStack.length > 1) {
@@ -71,13 +77,11 @@ const Disk = () => {
             </div>
             <div className={style.btn__block}>
                 <div className={style.btn__left}>
-                    <button onClick={back}>Back</button>
-                    <button onClick={openPopup}>New folder</button>
+                    <Button name={'back'} action={back}/>
+                    <Button name={'folder'} action={openPopup}/>
                     <LoadFile action={uploads}/>
                 </div>
                 <div className={style.btn__right}>
-                <button onClick={e => renameFile('name')}>rename</button>
-
                     <Sort setSort={setSort}/>
                     <button className={style.btn} 
                     onClick={setListView}>
@@ -94,9 +98,11 @@ const Disk = () => {
             <Popup 
                 popupDisplay={popupDisplay}
                 cansel={closePopup}
-                create={create}
+                name={'create dir...'}
                 currentDir={currentDir}
                 popupName={'New folder'}
+                action={createDirectory}
+                btnName={'create'}
             />
         </div>
     );

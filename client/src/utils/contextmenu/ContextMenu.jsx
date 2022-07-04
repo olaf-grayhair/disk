@@ -1,20 +1,26 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import { deleteFile, dowloadFile } from '../../actions/file';
-import Popup from '../../components/popup/Popup';
-import PopupMenu from '../../components/popupMenu/PopupMenu';
 import { popupMenuState, popupState } from '../../reducers/fileSlice';
 import { showMenu } from '../../reducers/userSlice';
 import { API_URL } from '../urls';
 import style from './contextmenu.module.scss'
-import { setPopupLink, setPopupState } from '../../reducers/settingsSlice';
-import PopupLink from '../../components/popupLink/PopupLink';
+import { deleteMarkFiles, setMarkFiles, setPopupLink, setPopupState } from '../../reducers/settingsSlice';
+
+import { AiOutlineCloudDownload, AiOutlineLink, AiFillDelete } from 'react-icons/ai';
+import { MdDriveFileRenameOutline } from 'react-icons/md';
+import { FaBookmark } from 'react-icons/fa';
+import { FcBookmark } from 'react-icons/fc';
+
 
 const ContextMenu = ({ top, left }) => {
+    const styleSetting = {
+        top: top - 165,
+        left
+    }
+
     const dispatch = useDispatch()
     const { name, _id, staticPath } = useSelector(state => state.user.contextMenu)
-    const { popupLink } = useSelector(state => state.settings)
 
     const detele = (e) => {
         e.stopPropagation()
@@ -35,26 +41,54 @@ const ContextMenu = ({ top, left }) => {
         dispatch(showMenu(false))
     }
 
-
-    const styleSetting = {
-        top: top - 165,
-        left
-    }
-
-    const openPopup = () => {
+    const rename = () => {
         dispatch(popupMenuState(true))
         // dispatch(popupState(true))
     }
+
+    const mark = useSelector(state => state.settings.markFiles)
+    const markFile = () => {
+        dispatch(setMarkFiles(_id))
+        // dispatch(setMarkFiles({name, _id, staticPath, state: true}))
+    }
+
+    const unMarkFile = () => {
+        dispatch(deleteMarkFiles(_id))
+        // dispatch(setMarkFiles({name, _id, staticPath, state: true}))
+    }
+
+    let arr = mark.map((file, index) => file === _id 
+        ? <span key={index + _id} onClick={unMarkFile}><b><FcBookmark size={'1.4em'}/></b> Unmark file</span>  
+        : <span key={index + _id} onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span> 
+        )
+
+    arr.filter((el, index) => arr.indexOf(el) === index)
+    console.log(arr, 'mark');
     return (
         <>
             <div className={style.contextmenu}
                 style={styleSetting}
             >
-                <span onClick={download}>Download</span>
-                <span onClick={detele}>Delete</span>
-                <span onClick={getLink}>Get link</span>
-                <span onClick={openPopup}>Rename file</span>
-                <span>Mark file</span>
+                <span onClick={download}>
+                    <b><AiOutlineCloudDownload size={'1.4em'}/></b> 
+                    Download
+                </span>
+                <span onClick={detele}>
+                    <b><AiFillDelete size={'1.4em'}/></b> 
+                    Delete
+                </span>
+                <span onClick={getLink}>
+                    <b><AiOutlineLink size={'1.4em'}/></b> 
+                    Get link
+                </span>
+                <span onClick={rename}>
+                    <b><MdDriveFileRenameOutline size={'1.4em'}/></b> 
+                    Rename file
+                </span>
+                {arr.length >= 1 
+                ? arr 
+
+                : <span onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span>}
             </div>
         </>
 

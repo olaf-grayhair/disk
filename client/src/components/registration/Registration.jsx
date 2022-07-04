@@ -1,6 +1,7 @@
 import {React, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { registration } from '../../actions/user';
+import Button from '../../UI/button/Button';
 import Input from '../../utils/input/Input';
 import style from './registration.module.scss'
 
@@ -25,7 +26,10 @@ const Registration = () => {
                 action={setPassword}
                 placeholder={'enter password...'}/>
 
-                <button onClick={send}>send</button>
+                <Button
+                name={'Registration'}
+                action={send}
+                />
             </div>
         </div>
     );

@@ -6,6 +6,7 @@ import style from './user.module.scss'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import UserInfo from './user-info/UserInfo';
+import Button from '../../UI/button/Button';
 
 const User = () => {
     const history = useNavigate()
@@ -19,7 +20,10 @@ const User = () => {
     
     return (
         <div className={style.user}>
-            <button onClick={returnPrev}>BACK</button>
+            <Button
+            name={'back'}
+            action={returnPrev}
+            />
             <div className={style.user__wrap}>
                 <UserInfo 
                  avatar={avatar}

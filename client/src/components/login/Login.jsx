@@ -2,7 +2,9 @@ import {React, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
 import { login, registration } from '../../actions/user';
+import { setFiles } from '../../reducers/fileSlice';
 import { increment } from '../../reducers/userSlice';
+import Button from '../../UI/button/Button';
 import Input from '../../utils/input/Input';
 import style from './login.module.scss'
 
@@ -10,16 +12,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch()
-    const state = useSelector((state) => state.user.user)
 
-
-    console.log(state, 'LOGIN state');
     const send = () => {
         dispatch(login(email, password))
-    }
-    
-    const www = () => {
-        dispatch(increment())
+        dispatch(setFiles())
     }
 
     return (
@@ -32,10 +28,12 @@ const Login = () => {
 
                 <Input value={password} 
                 action={setPassword}
-                placeholder={'enter password...'}/>
+                placeholder={'enter password...'}
+                />
 
-                <button onClick={send}>Login</button>
-                <button onClick={www}>PLUS</button>
+                <Button name={'Login'} 
+                action={send}
+                />
             </div>
         </div>
     );

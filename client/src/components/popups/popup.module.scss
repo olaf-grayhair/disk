@@ -16,19 +16,21 @@
     .popup{
         padding: 20px;
         background-color: white;
-        width: 300px;
+        width: 400px;
 
         h2{
             margin-bottom: 20px;
         }
         input{
+            width: 100%;
             margin-bottom: 20px;
             padding: 5px 10px;
         }
         .btn__block{
             display: flex;
             justify-content: space-between;
-            width: 120px;
+            width: 200px;
+            float: right;
         }
     }
 }

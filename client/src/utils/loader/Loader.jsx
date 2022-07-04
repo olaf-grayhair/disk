@@ -1,4 +1,4 @@
-import {React, CSSProperties } from "react";
+import {React} from "react";
 import ClockLoader  from "react-spinners/ClockLoader"
 import style from './loader.module.scss'
 

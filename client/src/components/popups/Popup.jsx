@@ -1,22 +1,16 @@
 import {React, useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { renameFile } from '../../actions/file';
-import style from './popupmenu.module.scss'
+import ButtonWhite from '../../UI/button-white/ButtonWhite';
+import Button from '../../UI/button/Button';
+import style from './popup.module.scss'
 
-const PopupMenu = ({popupDisplay, cansel, path, popupName, parent}) => {
+const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
     const [dirName, setDirName] = useState('');
-    const { name, _id, staticPath } = useSelector(state => state.user.contextMenu)
-
-    const user = useSelector(state => state.user.user)
-
-    const dispatch = useDispatch()
-
     const inputName = (e) => {
         setDirName(e.target.value)
     }
     
     const createDir = () => {
-        dispatch(renameFile(dirName, _id, user.id, parent, staticPath, path))
+        create(dirName, currentDir)
         setDirName('')
         cansel()
     }
@@ -29,17 +23,17 @@ const PopupMenu = ({popupDisplay, cansel, path, popupName, parent}) => {
             <div className={style.popup} onClick={e => e.stopPropagation()}>
                 <h2>{popupName}</h2>
                 <input type="text" 
-                    placeholder={name} 
+                    placeholder='name' 
                     value={dirName}
                     onChange={inputName}
                     />
                 <div className={style.btn__block}>
-                    <button onClick={cansel}>Cancel</button>
-                    <button onClick={createDir}>Create</button>
+                    <ButtonWhite name={'cansel'} action={cansel}/>
+                    <Button name={'Create'} action={createDir}/>
                 </div>
             </div>
         </div>
     );
 }
 
-export default PopupMenu;
+export default Popup;

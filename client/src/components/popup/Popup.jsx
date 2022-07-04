@@ -1,16 +1,22 @@
 import {React, useState} from 'react';
+import ButtonWhite from '../../UI/button-white/ButtonWhite';
+import Button from '../../UI/button/Button';
 import style from './popup.module.scss'
 
-const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
+const Popup = ({popupDisplay, cansel, currentDir, popupName, action, name, btnName}) => {
     const [dirName, setDirName] = useState('');
     const inputName = (e) => {
         setDirName(e.target.value)
     }
-    
+
     const createDir = () => {
-        create(dirName, currentDir)
+        action(dirName, currentDir)
         setDirName('')
+    }
+
+    const close = () => {
         cansel()
+        setDirName('')
     }
 
     return (
@@ -21,13 +27,13 @@ const Popup = ({popupDisplay, cansel, create, currentDir, popupName}) => {
             <div className={style.popup} onClick={e => e.stopPropagation()}>
                 <h2>{popupName}</h2>
                 <input type="text" 
-                    placeholder='name' 
+                    placeholder={name} 
                     value={dirName}
                     onChange={inputName}
                     />
                 <div className={style.btn__block}>
-                    <button onClick={cansel}>Cancel</button>
-                    <button onClick={createDir}>Create</button>
+                    <ButtonWhite name={'cansel'} action={close}/>
+                    <Button name={btnName} action={createDir}/>
                 </div>
             </div>
         </div>

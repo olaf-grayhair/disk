@@ -10,6 +10,7 @@ const settingsSlice = createSlice({
         showFile: false,
         popupLink: false,
         popupLinkstate: false,
+        markFiles: []
     },
 
     reducers: {
@@ -28,9 +29,19 @@ const settingsSlice = createSlice({
         setPopupLink(state, actions) {
             state.popupLink = actions.payload
         },
+        setMarkFiles(state, actions) {
+            // state.markFiles.push(actions.payload) 
+            state.markFiles = state.markFiles.map(file => file._id !== actions.payload 
+                ? state.markFiles.push(actions.payload)
+                : state.markFiles.push(actions.payload)
+                )
+        },
+        deleteMarkFiles(state, actions) {
+            state.markFiles = state.markFiles.filter(file => file._id === actions.payload)
+        },
 
     }
 })
 
 export default settingsSlice.reducer
-export const {loading, setView, setShowFile, setPopupLink, setPopupState} = settingsSlice.actions
+export const {loading, setView, setShowFile, setPopupLink, setPopupState, setMarkFiles, deleteMarkFiles} = settingsSlice.actions

@@ -1,17 +1,21 @@
 @import "../../utils/colors.scss";
 .contextmenu{
-    width: 320px;
-    padding: 10px 20px;
-    box-shadow: 2px 2px 2px 2px rgb(6, 5, 5);
+    width: 220px;
+    padding: 15px 0px;
+    box-shadow: 1px 3px 29px -5px rgba(0,0,0,0.71);
     position: absolute;
     z-index: 1000;
     background-color: white;
     span{
+        b{
+            margin-right: 10px;
+        }
         cursor: pointer;
-        display: block;
+        display: flex;
+        align-items: center;
         margin: 5px 0;
         font-size: 16px;
-        padding: 5px 10px;
+        padding: 5px 20px;
         &:hover{
             background-color: $hover;
         }
