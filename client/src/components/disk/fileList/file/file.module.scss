@@ -3,10 +3,12 @@
     cursor: pointer;
     padding: 10px;
     display: grid;
-    grid-template-columns: 1fr 4fr repeat(4, 1fr);
+    grid-template-columns: 1fr 4fr repeat(3, 1fr);
     margin: 10px 0;
     align-items: center;
     border-top: 1px solid $popup;
+    height: 120px;
+
     &:hover{
         background-color: $hover;
     }
@@ -59,3 +61,4 @@
         text-align: right;
     }
 }
+

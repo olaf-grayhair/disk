@@ -1,5 +1,5 @@
-import { addFile, delFile, renameAction, setFiles } from '../reducers/fileSlice';
-import { loading, setView } from '../reducers/settingsSlice';
+import { addFile, delFile, mvFile, renameAction, setFiles } from '../reducers/fileSlice';
+import { loading, setDirectories, setView } from '../reducers/settingsSlice';
 import { instance } from '../utils/instance';
 import { slicePath } from '../utils/slicePath';
 
@@ -50,33 +50,24 @@ export const uploadFile = (file, dirId) => {
             if(dirId) {
                 formData.append('parent', dirId)
             }
-            const response = await instance.post(`files/upload`, formData)
+            const response = await instance.post(`files/upload`, formData, {
+                onUploadProgress: progressEvent => {
+                    const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+                    console.log('total', totalLength)
+                    if (totalLength) {
+                        let progress = Math.round((progressEvent.loaded * 100) / totalLength)
+                        console.log(progress)
+                        return progress
+                    }
+                }
+            })
+
             dispatch(addFile(response.data))
         }catch(e) {
             console.log(e.response.data.message, 'CATCH')
         }
     }
 }
-
-// export const dowloadFile = (id, name) => {
-//     return async () => {
-//         try{
-//             const response = await instance.get(`files/download?id=${id}`, {responseType: 'blob',})
-//             if(response.status === 200) {
-//                 const blob = await response.blob()
-//                 const downloadUrl = window.URL.createObjectURL(blob)
-//                 const link = document.createElement('a')
-//                 link.href = downloadUrl
-//                 link.download = name
-//                 document.body.appendChild(link)
-//                 link.click()
-//                 link.remove()
-//             }
-//         }catch(e) {
-//             console.log(e.response.data.message, 'CATCH')
-//         }
-//     }
-// }
 
 export async function dowloadFile(id, name) {
     const response = await fetch(`http://localhost:5000/api/files/download?id=${id}`,{
@@ -123,6 +114,20 @@ export const searchFile = (name) => {
     }
 }
 
+export const searchDir = (name) => {
+    return async (dispatch) => {
+        console.log(name, 'search');
+        let url = `files/type?search=dir`
+        try{
+            const response = await instance.get(url)                               
+            dispatch(setDirectories(response.data))
+            console.log(response.data);
+        }catch(e) {
+            console.log(e.response, 'CATCH')
+        }
+    }
+}
+
 export const renameFile = (name, id, userId, parent, staticPath, path) => {
     return async (dispatch) => {
         let file = {}
@@ -159,3 +164,35 @@ export const renameFile = (name, id, userId, parent, staticPath, path) => {
     }
 }
 
+export const changeDirectory = (obj) => {
+    return async (dispatch) => {
+        const {id, name, path, userId, parent} = obj
+        console.log(id, name, path, userId, parent);
+        let file = {}
+        if(parent === null) {
+            file = {
+                path: name,
+                parent: null,
+                staticPath: userId + '\\' + name,
+                _id: id
+            }
+        }else {
+            file = {
+                path: path + '\\' + name,
+                parent,
+                staticPath: userId + '\\' + path + '\\' + name,
+                _id: id
+            }
+        }
+
+        console.log(file, 'FETCH');
+        try{
+            const response = await instance.put(`files`, 
+            file)                               
+            dispatch(mvFile(response.data))
+            console.log(response.data);
+        }catch(e) {
+            console.log(e.response, 'CATCH')
+        }
+    }
+}

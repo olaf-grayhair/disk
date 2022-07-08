@@ -45,10 +45,13 @@ const fileSlice = createSlice({
         },
         renameAction(state, action) {
             state.files = state.files.map(file => file._id === action.payload._id ? file = action.payload : file)
-        }
+        },
+        mvFile(state, action) {
+            state.files = state.files.map(file => file._id === action.payload._id ? file = action.payload : file)
+        },
     }
 })
 
 export default fileSlice.reducer
-export const {setFiles, setCurrentDir, addFile, popupState, addNav, remNav, delFile, popupMenuState, renameAction} = fileSlice.actions
+export const {setFiles, setCurrentDir, addFile, popupState, addNav, remNav, delFile, popupMenuState, renameAction, mvFile} = fileSlice.actions
 // cold@777.mail.ru

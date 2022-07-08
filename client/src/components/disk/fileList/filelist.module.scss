@@ -5,9 +5,10 @@
     .list{
         .header{
             display: grid;
-            grid-template-columns: 4fr repeat(3, 1fr);
-            //ДОДЕЛАТЬ!!!
+            grid-template-columns: 5fr repeat(3, 1fr);
+            text-transform: uppercase;
             padding: 10px;
+            padding-left: 50px;
             align-items: center;
             span{
                 font-weight: 600;

@@ -12,6 +12,7 @@
     align-items: center;
     background-color: $popup;
     display: none;
+    overflow: hidden;
 
     .popup{
         padding: 20px;
@@ -21,6 +22,32 @@
         h2{
             margin-bottom: 20px;
         }
+        .array{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+
+            .item, .itemActive{
+                width: 100%;
+                padding: 5px 10px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                &:hover{
+                    background-color: blanchedalmond;
+                }
+
+                .icon{
+                    margin-right: 20px;
+                }
+            }
+
+            .itemActive{
+                background-color: blanchedalmond
+            }
+        }
+
+
         input{
             width: 100%;
             margin-bottom: 20px;

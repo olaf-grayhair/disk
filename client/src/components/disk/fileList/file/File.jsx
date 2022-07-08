@@ -5,15 +5,18 @@ import { addNav, popupMenuState, setCurrentDir } from '../../../../reducers/file
 import { setContextMenu, setMenu } from "../../../../reducers/userSlice";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteFile, dowloadFile, renameFile } from '../../../../actions/file';
+import { changeDirectory, deleteFile, dowloadFile, renameFile } from '../../../../actions/file';
 import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
 import FileOpen from './file-open/FileOpen'
-import { setPopupLink, setPopupState, setShowFile } from '../../../../reducers/settingsSlice';
+import { setPopupLink, setPopupMove, setPopupState, setShowFile } from '../../../../reducers/settingsSlice';
 import { uploads } from '../../../../utils/uploads';
 import { API_URL } from '../../../../utils/urls';
 import Popup from '../../../popup/Popup';
 
 import { FcBookmark } from 'react-icons/fc';
+import Modal from '../../../modal/Popup';
+import { onChange, reader } from '../../../../utils/fileOpen';
+import Audio from '../../../audio/Audio';
 
 
 const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent }) => {
@@ -21,9 +24,12 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const view = useSelector(state => state.settings.view)
     const showFile = useSelector(state => state.settings.showFile)
     const splitFile = name.split('.', -1).pop()
-
+    ///set type files
     const [state, setstate] = useState(false);
+    const [txtFile, setTxtFile] = useState(false);
     ///chandgePAge
+    const {files, currentDir} = useSelector((state) => state.file)
+
     const changePage = (e) => {
         let fileType = type.toLowerCase()
         if (fileType === 'dir') {
@@ -33,7 +39,9 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         }
         if (fileType === 'jpg' || fileType === 'png') {
             setstate(true)
-            dispatch(setShowFile(true))
+        }
+        if (fileType === 'mp3') {
+            setTxtFile(true)
         }
     }
     ///chandgePAge
@@ -47,7 +55,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const openContextMenu = (e) => {
         e.preventDefault()
         openMenu(e)
-        dispatch(setContextMenu({_id, name, staticPath}))
+        dispatch(setContextMenu({_id, name, staticPath, type}))
         // dispatch(popupMenuState(false))
     }
 
@@ -59,6 +67,8 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const closePopup = () => {
         dispatch(popupMenuState(false))
         dispatch(setPopupState(false))
+        //popupMove_file
+        dispatch(setPopupMove(false))
     }
 
     const rename = (dirName) => {
@@ -76,32 +86,41 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         console.log(link, 'dirName');
         alert('Text copied');
       }
-
+      
     //////markFile
     const markFile = useSelector(state => state.settings.markFiles)
     let arr = markFile.map(file => file === _id 
         ? <FcBookmark size={'1.4em'} key={_id}/> : '')
     // console.log(arr, 'markFile', markFile);
+
+    //popupMove
+    const popupMove = useSelector(state => state.settings.popupMove)
+
+
+    const moveOneFile = (id, name, path, userId, parent) => {
+        dispatch(changeDirectory(id, name, path, userId, parent))
+    }
     
+    // {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
+
     if (view === 'list') {
         return (
-            <div>
-                {state
-                    ? <FileOpen img={staticPath} setstate={setstate} state={state} />
-                    : <div className={style.list}
-                        onClick={changePage}
-                        onContextMenu={openContextMenu}
-                    >
-                        {/* {compareFiles()} */}
-                        <img src={compareImg() 
-                            ? API_URL + staticPath 
-                            : uploads(splitFile)} alt={name} />
-                        <span>{name}</span>
-                        <span>{date.slice(0, 10)}</span>
-                        <span>{type}</span>
-                        <span>{sizeOfFiles(size)}</span>
-                    </div>
-                }
+            <>
+                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath}/>}
+                {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
+                <div className={style.list}
+                    onClick={changePage}
+                    onContextMenu={openContextMenu}
+                >
+                    {/* {compareFiles()} */}
+                    <img src={compareImg() 
+                        ? API_URL + staticPath 
+                        : uploads(splitFile)} alt={name} />
+                    <span>{name}</span>
+                    <span>{date.slice(0, 10)}</span>
+                    <span>{type}</span>
+                    <span>{sizeOfFiles(size)}</span>
+                </div>
               <Popup
               popupName={'Change name'} 
               cansel={closePopup}
@@ -118,27 +137,33 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                 name={link}
                 btnName={'copy'}
                />
-            </div>
+               <Modal
+                popupName={'Move files'} 
+                popupDisplay={popupMove}
+                cansel={closePopup}
+                action={copyLink}
+                btnName={'copy'}
+                move={moveOneFile}
+               />
+            </>
         );
     }
 
     if (view === 'grid') {
         return (
-            <div>
-                {state
-                    ? <FileOpen img={staticPath} setstate={setstate}
-                        state={state} />
-                    : <div className={style.grid}
-                        onClick={changePage}
-                        onContextMenu={openContextMenu}
-                    >
-                        <img src={compareImg() 
-                            ? API_URL + staticPath 
-                            : uploads(splitFile)} alt={name} />
-                        <span>{name}</span>
-                        <span className={style.mark}>{arr}</span>
-                    </div>
-                }
+            <>
+                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath}/>}
+                {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
+                <div className={style.grid}
+                    onClick={changePage}
+                    onContextMenu={openContextMenu}
+                >
+                    <img src={compareImg() 
+                        ? API_URL + staticPath 
+                        : uploads(splitFile)} alt={name} />
+                    <span>{name}</span>
+                    <span className={style.mark}>{arr}</span>
+                </div>
               <Popup
               popupName={'Change name'} 
               cansel={closePopup}
@@ -155,7 +180,15 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                 name={link}
                 btnName={'copy'}
                />
-            </div>
+                <Modal
+                popupName={'Move files'} 
+                popupDisplay={popupMove}
+                cansel={closePopup}
+                action={copyLink}
+                btnName={'copy'}
+                move={moveOneFile}
+               />
+            </>
         );
     }
 

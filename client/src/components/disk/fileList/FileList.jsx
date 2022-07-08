@@ -20,14 +20,16 @@ const FileList = () => {
     function dragEnterHandler(e) {
         e.preventDefault()
         e.stopPropagation()
-        setDragEnter(true)
-        console.log(e.target);
+        // setDragEnter(true)
+        // e.target.style.background = "gray";
+        // console.log(e.target);
     }
 
     function dragLeaveHandler(e) {
         e.preventDefault()
         e.stopPropagation()
         setDragEnter(false)
+        // e.target.style.background = "white";
     }
 
     function dropHandler(e) {
@@ -75,7 +77,8 @@ const FileList = () => {
                         onDragEnter={dragEnterHandler}
                         onDragLeave={dragLeaveHandler}
                         onDragOver={dragEnterHandler}
-                        onDrop={dropHandler}>
+                        onDrop={dropHandler}
+                        >
                         <span>Upload files...</span>
                     </div>
                 }
@@ -100,7 +103,8 @@ const FileList = () => {
                         onDragEnter={dragEnterHandler}
                         onDragLeave={dragLeaveHandler}
                         onDragOver={dragEnterHandler}
-                        onDrop={dropHandler}>
+                        onDrop={dropHandler}
+                        >
                         <span>Upload files...</span>
                     </div>
                 }

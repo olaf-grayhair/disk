@@ -12,6 +12,7 @@ import { FaListUl } from 'react-icons/fa';
 import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { setView } from '../../reducers/settingsSlice';
 import Button from '../../UI/button/Button';
+import ProgressBar from '../../utils/progress-bar/ProgressBar';
 
 
 const Disk = () => {
@@ -95,6 +96,7 @@ const Disk = () => {
                 </div>
             </div>
             <FileList/>
+            <ProgressBar/>
             <Popup 
                 popupDisplay={popupDisplay}
                 cansel={closePopup}

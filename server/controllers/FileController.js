@@ -162,6 +162,18 @@ class FileController {
         }
     }
 
+    async seacrchType(req, res) {
+        try {
+            const searchName = req.query.search
+            let files = await File.find({user: req.user.id})
+            files = files.filter(file => file.type.includes(searchName))
+            return res.json(files)
+
+        } catch (e) {
+            return res.status(400).json({message: 'search error'})
+        }
+    }
+
     async uploadAvatar(req, res) {
         try {
             const file = req.files.file
@@ -189,30 +201,6 @@ class FileController {
             return res.status(400).json({message: 'Delete avatar error'})
         }
     }
-
-    // async rename(req, res) {
-    //     try {
-    //         // console.log(req.query.id, 'query', req.user.id);
-    //         const {name, type, parent} = req.body
-    //         const userId = req.user.id
-    //         const file = await File.findOne({_id: req.query.id, user: req.user.id})
-
-    //         console.log(name, userId, file, '___RENAME___');
-    //         const updateFile = await File.updateOne({user: userId},{$set: {name: name, path: name}})
-    //         if (!file) {
-    //             return res.status(400).json({message: 'file not found'})
-    //         }
-
-    //         fileService.renameFile(file, name)
-
-
-    //         await file.save()
-    //         return res.json(updateFile)
-    //     } catch (e) {
-    //         console.log(e)
-    //         return res.status(400).json({message : 'rename error'})
-    //     }
-    // }
 
     async rename(req, res) {
         try {
