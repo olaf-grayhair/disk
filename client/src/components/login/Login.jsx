@@ -1,9 +1,8 @@
 import {React, useState} from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { login, registration } from '../../actions/user';
+import { login } from '../../actions/user';
 import { setFiles } from '../../reducers/fileSlice';
-import { increment } from '../../reducers/userSlice';
 import Button from '../../UI/button/Button';
 import Input from '../../utils/input/Input';
 import style from './login.module.scss'

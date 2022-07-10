@@ -9,7 +9,7 @@ import { changeDirectory, deleteFile, dowloadFile, renameFile } from '../../../.
 import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
 import FileOpen from './file-open/FileOpen'
 import { setPopupLink, setPopupMove, setPopupState, setShowFile } from '../../../../reducers/settingsSlice';
-import { uploads } from '../../../../utils/uploads';
+import { splitFile, uploads } from '../../../../utils/uploads';
 import { API_URL } from '../../../../utils/urls';
 import Popup from '../../../popup/Popup';
 
@@ -23,7 +23,6 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const dispatch = useDispatch()
     const view = useSelector(state => state.settings.view)
     const showFile = useSelector(state => state.settings.showFile)
-    const splitFile = name.split('.', -1).pop()
     ///set type files
     const [state, setstate] = useState(false);
     const [txtFile, setTxtFile] = useState(false);
@@ -115,7 +114,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                     {/* {compareFiles()} */}
                     <img src={compareImg() 
                         ? API_URL + staticPath 
-                        : uploads(splitFile)} alt={name} />
+                        : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
                     <span>{date.slice(0, 10)}</span>
                     <span>{type}</span>
@@ -160,7 +159,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                 >
                     <img src={compareImg() 
                         ? API_URL + staticPath 
-                        : uploads(splitFile)} alt={name} />
+                        : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
                     <span className={style.mark}>{arr}</span>
                 </div>

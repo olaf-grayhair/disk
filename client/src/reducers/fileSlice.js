@@ -40,6 +40,10 @@ const fileSlice = createSlice({
             state.dirStack.pop(action.payload)
             state.dirCount = state.dirCount - 1
         },
+        clearNav(state) {
+            state.dirStack.length = 1
+            state.dirCount = 0
+        },
         delFile(state, action) {
             state.files = state.files.filter(file => file._id !== action.payload)
         },
@@ -53,5 +57,5 @@ const fileSlice = createSlice({
 })
 
 export default fileSlice.reducer
-export const {setFiles, setCurrentDir, addFile, popupState, addNav, remNav, delFile, popupMenuState, renameAction, mvFile} = fileSlice.actions
+export const {setFiles, setCurrentDir, addFile, popupState, addNav, remNav, delFile, popupMenuState, renameAction, mvFile, clearNav} = fileSlice.actions
 // cold@777.mail.ru

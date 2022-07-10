@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteFile, dowloadFile, searchDir } from '../../actions/file';
-import { popupMenuState, popupState } from '../../reducers/fileSlice';
+import { popupMenuState } from '../../reducers/fileSlice';
 import { showMenu } from '../../reducers/userSlice';
 import { API_URL } from '../urls';
 import style from './contextmenu.module.scss'
@@ -15,7 +15,7 @@ import { FcBookmark } from 'react-icons/fc';
 
 const ContextMenu = ({ top, left }) => {
     const styleSetting = {
-        top: top - 165,
+        top: top,
         left
     }
 
@@ -50,8 +50,8 @@ const ContextMenu = ({ top, left }) => {
 
     const rename = () => {
         dispatch(popupMenuState(true))
-        // dispatch(popupState(true))
     }
+    
 ///MARKFILE
     const mark = useSelector(state => state.settings.markFiles)
     const markFile = () => {

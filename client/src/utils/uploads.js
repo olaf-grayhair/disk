@@ -7,6 +7,10 @@ import mp3 from '../assets/images/mp3.png'
 import pdf from '../assets/images/pdf.png'
 
 
+export const splitFile = (nameOfFile) => {
+    return nameOfFile.split('.', -1).pop()
+}
+
 export const uploads = (item) => {
     let file = item.toLowerCase()
     if(file === 'png' || file === 'jpg') {

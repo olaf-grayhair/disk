@@ -18,10 +18,10 @@ import ProgressBar from '../../utils/progress-bar/ProgressBar';
 const Disk = () => {
     const [sort, setSort] = useState('')
     const dispatch = useDispatch()
-    const {files, currentDir, popupDisplay, dirStack, dirCount } = useSelector((state) => state.file)
+    const { currentDir, popupDisplay, dirStack, dirCount } = useSelector((state) => state.file)
 
     const stack = dirStack.map((el, id )=> 
-    <NavButton {...el} key={el._id} dirCount={dirCount} id={id}
+    <NavButton {...el} key={el._id} dirNum={dirCount} id={id}
     />)
 /////////
     useEffect(() => {
@@ -74,7 +74,7 @@ const Disk = () => {
     return (
         <div className={style.disk}>
             <div className={style.nav__wrap}>
-                {dirStack < 1 ? <NavButton name={'My disk'}/> : stack}
+                {stack}
             </div>
             <div className={style.btn__block}>
                 <div className={style.btn__left}>

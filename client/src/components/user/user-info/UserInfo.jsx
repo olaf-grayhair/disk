@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import style from './userinfo.module.scss'
 
 import { deleteAvatar, uploadAvatar } from '../../../actions/user';
@@ -23,7 +23,7 @@ const UserInfo = ({avatar, id, email, name}) => {
         <div className={style.userinfo}>
             <div className={style.img}>
                 <img 
-                src={avatar !== null ? API_URL + avatar : userImg} alt={name} />
+                src={avatar? API_URL + avatar : userImg} alt={name} />
             </div>
             <div className={style.avatar}>
                 <label htmlFor='inputFile'>Select file</label>

@@ -3,14 +3,16 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import style from './progressbar.module.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { setClose, setHide } from '../../reducers/uploadSlice';
+import { setClose, setDeletUploadFiles, setHide } from '../../reducers/uploadSlice';
 
 import { AiFillCloseCircle } from 'react-icons/ai';
+import { AiFillCheckCircle } from 'react-icons/ai';
 import { IoIosArrowDown } from 'react-icons/io';
+import { splitFile, uploads } from '../uploads';
 
 const ProgressBar = () => {
     const dispatch = useDispatch()
-    const {isHide, isClose} = useSelector(state => state.upload)
+    const {isHide, isClose, files} = useSelector(state => state.upload)
 
     const arr = [
         { name: "file.css", img: "http://localhost:3000/static/media/mp3.513706fbb76fa001cd87.png" },
@@ -19,6 +21,7 @@ const ProgressBar = () => {
     ]
 
     const close = () => {
+        dispatch(setDeletUploadFiles())
         dispatch(setClose(false))
     }
 
@@ -26,12 +29,15 @@ const ProgressBar = () => {
         dispatch(setHide(!isHide))
     }
 
-    const result = arr.map(el => (
-        <div className={style.item}>
-            <img src={el.img} className={style.icon} alt="" />
+    const result = files.map((el, index) => (
+        <div className={style.item} key={Date.now()+index}>
+            <img src={uploads(splitFile(el.name))} className={style.icon} alt="" />
             <span>{el.name}</span>
             <div className={style.circul}>
-                <CircularProgressbar value={100} text={`${100}%`} />
+                {el.progress === 100 
+                ? <AiFillCheckCircle size={'1.6em'} color={"green"}/>
+                : <CircularProgressbar value={el.progress} text={`${el.progress}%`} />
+                }
             </div>
         </div>
     ))
@@ -40,7 +46,7 @@ const ProgressBar = () => {
         isClose &&
         <div className={style.progressbar}>
             <div className={style.header}>
-                <h2>upload 1 file</h2>
+                <h2>upload {files.length} files</h2>
                 <div className={style.close}  onClick={close}>
                     <AiFillCloseCircle color='white' size={"1.2em"}/>
                 </div>

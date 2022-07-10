@@ -9,7 +9,7 @@ import { FaFolder } from 'react-icons/fa';
 import { setPopupMove } from '../../reducers/settingsSlice';
 import { delFile } from '../../reducers/fileSlice';
 
-const Modal = ({popupDisplay, cansel, create, currentDir, popupName, }) => {
+const Modal = ({popupDisplay, cansel}) => {
     const dispatch = useDispatch()
 
     const files = useSelector(state => state.settings.directories)
@@ -34,8 +34,6 @@ const Modal = ({popupDisplay, cansel, create, currentDir, popupName, }) => {
     ? 
         <span key={el._id} 
             className={i !== index ? style.item : style.itemActive} 
-            // onClick={e => 
-            // {dispatch(changeDirectory(_id, name, el.path, user, el._id)); setIndex(i); }}
             onClick={e => {setobj({
                 id:_id, 
                 name: name, 

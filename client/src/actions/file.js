@@ -1,6 +1,10 @@
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+
 import { addFile, delFile, mvFile, renameAction, setFiles } from '../reducers/fileSlice';
 import { loading, setDirectories, setView } from '../reducers/settingsSlice';
-import { instance } from '../utils/instance';
+import { setProgress, setUploadFiles } from '../reducers/uploadSlice';
+import { instance, SetState } from '../utils/instance';
 import { slicePath } from '../utils/slicePath';
 
 
@@ -50,14 +54,18 @@ export const uploadFile = (file, dirId) => {
             if(dirId) {
                 formData.append('parent', dirId)
             }
+
+            let upload = {name: file.name, progress: 0, id: Date.now()}
+            dispatch(setUploadFiles(upload))
+
             const response = await instance.post(`files/upload`, formData, {
                 onUploadProgress: progressEvent => {
                     const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-                    console.log('total', totalLength)
                     if (totalLength) {
-                        let progress = Math.round((progressEvent.loaded * 100) / totalLength)
-                        console.log(progress)
-                        return progress
+                        const res = Math.round((progressEvent.loaded * 100) / totalLength)
+                        const arr = {...upload}
+                        arr.progress = res
+                        dispatch(setProgress(arr))
                     }
                 }
             })

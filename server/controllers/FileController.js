@@ -65,9 +65,6 @@ class FileController {
         try {
             const file = req.files.file
 
-            // const typeOfFile = file.name.match(/\.([a-zA-Z]+)$/)[1]
-            // const file.name = Uuid.v4() + "." + typeOfFile
-
             const parent = await File.findOne({user: req.user.id, _id: req.body.parent})
             const user = await User.findOne({_id: req.user.id})
 
@@ -134,14 +131,17 @@ class FileController {
 
     async deleteFile(req, res) {
         try {
-            // console.log(req.id, 'query', req.user.id);
-
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            // console.log(file, 'delete');
+            const user = await User.findOne({_id: req.user.id})
+
             if (!file) {
                 return res.status(400).json({message: 'file not found'})
             }
+
+            user.usedSpace = user.usedSpace - file.size
+
             fileService.deleteFile(file)
+            await user.save()
             await file.remove()
             return res.json({message: 'File was deleted'})
         } catch (e) {

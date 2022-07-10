@@ -9,6 +9,6 @@ export const sizeOfFiles = (size) => {
         return `${(size / 1024 / 1024 / 1024).toFixed(1)} Gb`
     }
     if(size === 0 ) {
-        return 'dir'
+        return '-'
     }
 }

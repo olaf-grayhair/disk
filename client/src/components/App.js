@@ -10,13 +10,11 @@ import Disk from "./disk/Disk";
 import User from "./user/User";
 import Home from '../pages/home/Home'
 import { showMenu } from "../reducers/userSlice";
-import { popupMenuState } from "../reducers/fileSlice";
 
 
 function App() {
   const {isAuth, user} = useSelector((state) => state.user)
   const dispatch = useDispatch()
-  const showContextMenu = useSelector((state) => state.user.showContextMenu)
   
   const closeMenu = (e) => {
     dispatch(showMenu(false))

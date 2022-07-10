@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState} from 'react';
 import style from './navbar.module.scss'
 import logo from '../../assets/images/cloud-logo.png'
 import { Link } from 'react-router-dom';
@@ -30,7 +30,8 @@ const Navbar = () => {
                     <Search setSearch={setSearch} search={search}/>
                     <Link to={user.email} className={style.text}>
                         {user.email}
-                        <img src={user.avatar !== null ? API_URL + user.avatar : userImg} alt={user.name} />
+                        <img 
+                        src={user.avatar ? API_URL + user.avatar : userImg} alt={user.name} />
                     </Link>
                     <span className={style.text} onClick={exit}>Exit</span>
                 </div>
