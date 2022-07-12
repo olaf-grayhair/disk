@@ -27,7 +27,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const [state, setstate] = useState(false);
     const [txtFile, setTxtFile] = useState(false);
     ///chandgePAge
-    const {files, currentDir, dirCount} = useSelector((state) => state.file)
+    const { files, currentDir, dirCount } = useSelector((state) => state.file)
 
     const changePage = (e) => {
         let fileType = type.toLowerCase()
@@ -39,14 +39,14 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         if (fileType === 'jpg' || fileType === 'png' || fileType === 'gif') {
             setstate(true)
         }
-        if (fileType === 'mp3') {
+        if (fileType === 'mp3' || fileType === 'ape' || fileType === 'avi') {
             setTxtFile(true)
         }
     }
     ///chandgePAge
     const compareImg = () => {
         const set = staticPath.split('.', 2).pop().toLowerCase()
-        if(set === 'jpg' || set === 'png' || set === 'jpeg' || set === 'gif') {
+        if (set === 'jpg' || set === 'png' || set === 'jpeg' || set === 'gif') {
             return true
         }
     }
@@ -54,7 +54,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const openContextMenu = (e) => {
         e.preventDefault()
         openMenu(e)
-        dispatch(setContextMenu({_id, name, staticPath, type}))
+        dispatch(setContextMenu({ _id, name, staticPath, type }))
         // dispatch(popupMenuState(false))
     }
 
@@ -84,76 +84,64 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         await navigator.clipboard.writeText(link);
         console.log(link, 'dirName');
         alert('Text copied');
-      }
-      
+    }
+
     //////markFile
-    const markFile = useSelector(state => state.settings.markFiles)
-    
-    let arr = markFile.map(file => file === _id 
-        ? <FcBookmark size={'1.4em'} key={_id}/> : '')
+    const array = JSON.parse(localStorage.getItem('mark')) || []
+    const mark = array.map(file => file === _id
+        ? <FcBookmark size={'1.4em'} key={_id} /> : '')
 
-
-    const array = markFile.map(file => file === _id 
-        ? <FcBookmark size={'1.4em'} key={_id}/> : '') 
-        && 
-        JSON.parse(localStorage.getItem('mark')).map(file => file === _id 
-        ? <FcBookmark size={'1.4em'} key={_id}/> : '') || []
-
-
-
-    const arr1 = JSON.parse(localStorage.getItem('mark')) || []
     //popupMove
     const popupMove = useSelector(state => state.settings.popupMove)
-
 
     const moveOneFile = (id, name, path, userId, parent) => {
         dispatch(changeDirectory(id, name, path, userId, parent))
     }
-    
-    // {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
 
     if (view === 'list') {
         return (
             <>
-                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath}/>}
+                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath} />}
                 {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
                 <div className={style.list}
                     onClick={changePage}
                     onContextMenu={openContextMenu}
                 >
-                    {/* {compareFiles()} */}
-                    <img src={compareImg() 
-                        ? API_URL + staticPath 
+                    <img src={compareImg()
+                        ? API_URL + staticPath
                         : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
+                    <span className={style.mark}>
+                        {mark}
+                    </span>
                     <span>{date.slice(0, 10)}</span>
                     <span>{type}</span>
                     <span>{sizeOfFiles(size)}</span>
                 </div>
-              <Popup
-              popupName={'Change name'} 
-              cansel={closePopup}
-              popupDisplay={popupMenu}
-              name={contextMenu.name}
-              action={rename}
-              btnName={'rename'}
-               />
-               <Popup
-                popupName={'Get link'} 
-                popupDisplay={popupLinkstate}
-                cansel={closePopup}
-                action={copyLink}
-                name={link}
-                btnName={'copy'}
-               />
-               <Modal
-                popupName={'Move files'} 
-                popupDisplay={popupMove}
-                cansel={closePopup}
-                action={copyLink}
-                btnName={'copy'}
-                move={moveOneFile}
-               />
+                <Popup
+                    popupName={'Change name'}
+                    cansel={closePopup}
+                    popupDisplay={popupMenu}
+                    name={contextMenu.name}
+                    action={rename}
+                    btnName={'rename'}
+                />
+                <Popup
+                    popupName={'Get link'}
+                    popupDisplay={popupLinkstate}
+                    cansel={closePopup}
+                    action={copyLink}
+                    name={link}
+                    btnName={'copy'}
+                />
+                <Modal
+                    popupName={'Move files'}
+                    popupDisplay={popupMove}
+                    cansel={closePopup}
+                    action={copyLink}
+                    btnName={'copy'}
+                    move={moveOneFile}
+                />
             </>
         );
     }
@@ -161,49 +149,44 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     if (view === 'grid') {
         return (
             <>
-                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath}/>}
+                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath} type={type}/>}
                 {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
                 <div className={style.grid}
                     onClick={changePage}
                     onContextMenu={openContextMenu}
                 >
-                    <img src={compareImg() 
-                        ? API_URL + staticPath 
+                    <img src={compareImg()
+                        ? API_URL + staticPath
                         : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
                     <span className={style.mark}>
-                        {/* {markFile.length === 0  ? arr : array} */}
-                        {array}
-                        {/* {array.length === null 
-                        ? arr
-                        : array
-                        } */}
+                        {mark}
                     </span>
                 </div>
-              <Popup
-              popupName={'Change name'} 
-              cansel={closePopup}
-              popupDisplay={popupMenu}
-              name={contextMenu.name}
-              action={rename}
-              btnName={'rename'}
-               />
-               <Popup
-                popupName={'Get link'} 
-                popupDisplay={popupLinkstate}
-                cansel={closePopup}
-                action={copyLink}
-                name={link}
-                btnName={'copy'}
-               />
+                <Popup
+                    popupName={'Change name'}
+                    cansel={closePopup}
+                    popupDisplay={popupMenu}
+                    name={contextMenu.name}
+                    action={rename}
+                    btnName={'rename'}
+                />
+                <Popup
+                    popupName={'Get link'}
+                    popupDisplay={popupLinkstate}
+                    cansel={closePopup}
+                    action={copyLink}
+                    name={link}
+                    btnName={'copy'}
+                />
                 <Modal
-                popupName={'Move files'} 
-                popupDisplay={popupMove}
-                cansel={closePopup}
-                action={copyLink}
-                btnName={'copy'}
-                move={moveOneFile}
-               />
+                    popupName={'Move files'}
+                    popupDisplay={popupMove}
+                    cansel={closePopup}
+                    action={copyLink}
+                    btnName={'copy'}
+                    move={moveOneFile}
+                />
             </>
         );
     }

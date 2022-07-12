@@ -45,7 +45,7 @@ const settingsSlice = createSlice({
 
 
         setMarkFiles(state, actions) {
-            state.markFiles.push(actions.payload) 
+            state.markFiles = actions.payload
             // localStorage.setItem('mark', JSON.stringify(state.markFiles))
 
             // const array = JSON.parse(localStorage.getItem('mark'))

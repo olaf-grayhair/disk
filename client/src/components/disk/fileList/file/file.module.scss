@@ -7,14 +7,14 @@
     justify-items: stretch;
     border-top: 1px solid $popup;
     height: 60px;
+    position: relative;
 
     &:hover{
         background-color: $hover;
     }
 
     img{
-        margin-bottom: 10px;
-        width: 100%;
+        width: 80%;
         height: 35%;
         object-fit: contain;
     }
@@ -25,6 +25,12 @@
         font-weight: 600;
         font-size: 16px;
         margin-left: 20px;
+    }
+    .mark{
+        position: absolute;
+        top: 17px;
+        right: 5px;
+        text-align: right;
     }
 }
 

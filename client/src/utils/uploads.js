@@ -22,10 +22,10 @@ export const uploads = (item) => {
     if(file === 'zip') {
         return rar
     }
-    if(file === 'mp4') {
+    if(file === 'mp4' || file === 'avi') {
         return mp4
     }
-    if(file === 'mp3') {
+    if(file === 'mp3' || file === 'ape') {
         return mp3
     }
     if(file === 'pdf') {

@@ -18,7 +18,7 @@ const User = () => {
     const {diskSpace, usedSpace, email, avatar, name} = useSelector(state => state.user.user)
 
     const value = Math.round((usedSpace / diskSpace) * 100)
-
+//////NEW
     const dispatch = useDispatch()
     const files = useSelector(state => state.settings.allFiles)
 
@@ -32,14 +32,14 @@ const User = () => {
         return array.reduce((a, b) => a + b.size, 0)
          
      }
+     console.log(array);
+    // const text = searchFile('text') 
+    // const archive = searchFile('archive')
+    // const media = searchFile('media')
+    const image = array.filter(file => file.typeOffile.includes('image'))
 
-    const text = searchFile('text')
-    const image = searchFile('image')
-    const archive = searchFile('archive')
-    const media = searchFile('media')
 
-
-
+    console.log(image);
     let a = fileSize(image)
     console.log(a);
 

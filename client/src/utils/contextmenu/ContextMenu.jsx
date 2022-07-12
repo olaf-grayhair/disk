@@ -54,24 +54,22 @@ const ContextMenu = ({ top, left }) => {
     
 ///MARKFILE
     const mark = useSelector(state => state.settings.markFiles)
+    const arr = JSON.parse(localStorage.getItem('mark')) || [];
+
+    React.useEffect(() => {
+        dispatch(setMarkFiles(arr))
+        console.log(arr, 'useEffect');
+    }, []);
+
     const markFile = () => {
-        dispatch(setMarkFiles(_id))
-        const arr = JSON.parse(localStorage.getItem('mark')) || [];
         arr.push(_id);
-        localStorage.setItem(JSON.stringify('mark', arr))
+        dispatch(setMarkFiles(arr))
+        localStorage.setItem('mark', JSON.stringify(arr))
     }
-    
-    console.log(_id, 'ID');
 
     const unMarkFile = () => {
         dispatch(deleteMarkFiles(_id))
-
     }
-
-    // let arr = mark.map((file, index) => file === _id 
-    //     ? <span key={index + _id} onClick={unMarkFile}><b><FcBookmark size={'1.4em'}/></b> Unmark file</span>  
-    //     : <span key={index + _id} onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span> 
-    //     )
 
     let res = mark.filter(file => file.includes(_id))
     const compareId = () => {
@@ -84,7 +82,6 @@ const ContextMenu = ({ top, left }) => {
         }
     }
 
-    console.log(res);
 ///MARKFILE
 
     return (
@@ -114,11 +111,8 @@ const ContextMenu = ({ top, left }) => {
                         move file
                     </span>
                 }
-
-                {/* MARK */}
                 {mark.length >= 1 
                 ? compareId() 
-
                 : <span onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span>}
             </div>
         </>

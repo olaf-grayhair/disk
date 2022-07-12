@@ -8,11 +8,11 @@ const Audio = ({ file, setTxtFile }) => {
         setTxtFile(false)
     }
 
-    console.log(file);
+
     return (
         <div className={style.audio}>
             <div className={style.file} onClick={e => e.stopPropagation()}>
-                <ReactAudioPlayer
+            <ReactAudioPlayer
                     src={file}
                     autoPlay
                     controls
