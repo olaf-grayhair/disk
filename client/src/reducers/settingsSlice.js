@@ -13,6 +13,7 @@ const settingsSlice = createSlice({
         popupMove: false,
         markFiles: [],
         directories: [],
+        allFiles: [],
     },
 
     reducers: {
@@ -37,18 +38,31 @@ const settingsSlice = createSlice({
         setDirectories(state, actions) {
             state.directories = actions.payload
         },
+        setAllFiles(state, actions) {
+            state.allFiles = actions.payload
+        },
 
 
 
         setMarkFiles(state, actions) {
-            // state.markFiles.push(actions.payload) 
-            state.markFiles = state.markFiles.map(file => file._id !== actions.payload 
-                ? state.markFiles.push(actions.payload)
-                : state.markFiles.push(actions.payload)
-                )
+            state.markFiles.push(actions.payload) 
+            // localStorage.setItem('mark', JSON.stringify(state.markFiles))
+
+            // const array = JSON.parse(localStorage.getItem('mark'))
+            // let arr = [...array]
+            // if(array) {
+            //     debugger
+            //     state.markFiles = array
+            //     state.markFiles.push(actions.payload) 
+            // }else {
+            //     state.markFiles.push(actions.payload) 
+            //     localStorage.setItem('mark', JSON.stringify(state.markFiles))
+            // }
+
         },
         deleteMarkFiles(state, actions) {
-            state.markFiles = state.markFiles.filter(file => file._id === actions.payload)
+            state.markFiles.map((file, index) => file === actions.payload ? state.markFiles.splice(index, 1) : file)
+            localStorage.setItem('mark', JSON.stringify(state.markFiles))
         },
 
     }
@@ -64,5 +78,6 @@ export const {
     setMarkFiles, 
     deleteMarkFiles, 
     setPopupMove, 
-    setDirectories
+    setDirectories,
+    setAllFiles
 } = settingsSlice.actions

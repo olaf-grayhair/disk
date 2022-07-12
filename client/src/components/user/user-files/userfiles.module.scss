@@ -1,0 +1,11 @@
+.userfiles{
+    width: 260px;
+
+    .item{
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 10px;
+    }
+}

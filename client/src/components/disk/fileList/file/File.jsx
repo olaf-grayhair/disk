@@ -27,16 +27,16 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const [state, setstate] = useState(false);
     const [txtFile, setTxtFile] = useState(false);
     ///chandgePAge
-    const {files, currentDir} = useSelector((state) => state.file)
+    const {files, currentDir, dirCount} = useSelector((state) => state.file)
 
     const changePage = (e) => {
         let fileType = type.toLowerCase()
         if (fileType === 'dir') {
             dispatch(setCurrentDir(_id))
-            const pushItem = { name, _id }
+            const pushItem = { name, _id, id: dirCount + 1 }
             dispatch(addNav(pushItem))
         }
-        if (fileType === 'jpg' || fileType === 'png') {
+        if (fileType === 'jpg' || fileType === 'png' || fileType === 'gif') {
             setstate(true)
         }
         if (fileType === 'mp3') {
@@ -46,7 +46,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     ///chandgePAge
     const compareImg = () => {
         const set = staticPath.split('.', 2).pop().toLowerCase()
-        if(set === 'jpg' || set === 'png' || set === 'jpeg') {
+        if(set === 'jpg' || set === 'png' || set === 'jpeg' || set === 'gif') {
             return true
         }
     }
@@ -88,10 +88,20 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
       
     //////markFile
     const markFile = useSelector(state => state.settings.markFiles)
+    
     let arr = markFile.map(file => file === _id 
         ? <FcBookmark size={'1.4em'} key={_id}/> : '')
-    // console.log(arr, 'markFile', markFile);
 
+
+    const array = markFile.map(file => file === _id 
+        ? <FcBookmark size={'1.4em'} key={_id}/> : '') 
+        && 
+        JSON.parse(localStorage.getItem('mark')).map(file => file === _id 
+        ? <FcBookmark size={'1.4em'} key={_id}/> : '') || []
+
+
+
+    const arr1 = JSON.parse(localStorage.getItem('mark')) || []
     //popupMove
     const popupMove = useSelector(state => state.settings.popupMove)
 
@@ -161,7 +171,14 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                         ? API_URL + staticPath 
                         : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
-                    <span className={style.mark}>{arr}</span>
+                    <span className={style.mark}>
+                        {/* {markFile.length === 0  ? arr : array} */}
+                        {array}
+                        {/* {array.length === null 
+                        ? arr
+                        : array
+                        } */}
+                    </span>
                 </div>
               <Popup
               popupName={'Change name'} 

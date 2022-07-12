@@ -4,8 +4,6 @@
     padding: 10px;
     display: grid;
     grid-template-columns: 1fr 4fr repeat(3, 1fr);
-    margin: 10px 0;
-    // align-items: center;
     justify-items: stretch;
     border-top: 1px solid $popup;
     height: 60px;

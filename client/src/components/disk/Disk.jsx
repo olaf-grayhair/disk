@@ -1,7 +1,7 @@
 import {React, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createDir, getFiles, renameFile, uploadFile } from '../../actions/file';
-import { addFile, popupState, remNav, setCurrentDir } from '../../reducers/fileSlice';
+import { addFile, backNav, popupState, remNav, setCurrentDir } from '../../reducers/fileSlice';
 import NavButton from '../../utils/nav-button/NavButton';
 import LoadFile from '../load-files/LoadFile';
 import Popup from '../popup/Popup';
@@ -20,7 +20,7 @@ const Disk = () => {
     const dispatch = useDispatch()
     const { currentDir, popupDisplay, dirStack, dirCount } = useSelector((state) => state.file)
 
-    const stack = dirStack.map((el, id )=> 
+    const navButton = dirStack.map((el, id )=> 
     <NavButton {...el} key={el._id} dirNum={dirCount} id={id}
     />)
 /////////
@@ -36,10 +36,6 @@ const Disk = () => {
     const closePopup = () => {
         dispatch(popupState(false))
     }
-
-    // const create = (dirName, currentDir) => {
-    //     dispatch(createDir(dirName, currentDir))
-    // }
 
     const createDirectory = (dirName, currentDir) => {
         dispatch(createDir(dirName, currentDir))
@@ -74,7 +70,7 @@ const Disk = () => {
     return (
         <div className={style.disk}>
             <div className={style.nav__wrap}>
-                {stack}
+                {navButton}
             </div>
             <div className={style.btn__block}>
                 <div className={style.btn__left}>

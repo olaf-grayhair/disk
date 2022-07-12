@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
 import { addFile, delFile, mvFile, renameAction, setFiles } from '../reducers/fileSlice';
-import { loading, setDirectories, setView } from '../reducers/settingsSlice';
+import { loading, setAllFiles, setDirectories, setView } from '../reducers/settingsSlice';
 import { setProgress, setUploadFiles } from '../reducers/uploadSlice';
 import { instance, SetState } from '../utils/instance';
 import { slicePath } from '../utils/slicePath';
@@ -129,6 +129,18 @@ export const searchDir = (name) => {
         try{
             const response = await instance.get(url)                               
             dispatch(setDirectories(response.data))
+        }catch(e) {
+            console.log(e.response, 'CATCH')
+        }
+    }
+}
+
+export const getAllFiles = () => {
+    return async (dispatch) => {
+        let url = `files/all`
+        try{
+            const response = await instance.get(url)                               
+            dispatch(setAllFiles(response.data))
             console.log(response.data);
         }catch(e) {
             console.log(e.response, 'CATCH')

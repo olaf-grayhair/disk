@@ -56,21 +56,35 @@ const ContextMenu = ({ top, left }) => {
     const mark = useSelector(state => state.settings.markFiles)
     const markFile = () => {
         dispatch(setMarkFiles(_id))
-        // dispatch(setMarkFiles({name, _id, staticPath, state: true}))
+        const arr = JSON.parse(localStorage.getItem('mark')) || [];
+        arr.push(_id);
+        localStorage.setItem(JSON.stringify('mark', arr))
     }
+    
+    console.log(_id, 'ID');
 
     const unMarkFile = () => {
         dispatch(deleteMarkFiles(_id))
-        // dispatch(setMarkFiles({name, _id, staticPath, state: true}))
+
     }
 
-    let arr = mark.map((file, index) => file === _id 
-        ? <span key={index + _id} onClick={unMarkFile}><b><FcBookmark size={'1.4em'}/></b> Unmark file</span>  
-        : <span key={index + _id} onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span> 
-        )
+    // let arr = mark.map((file, index) => file === _id 
+    //     ? <span key={index + _id} onClick={unMarkFile}><b><FcBookmark size={'1.4em'}/></b> Unmark file</span>  
+    //     : <span key={index + _id} onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span> 
+    //     )
 
-    arr.filter((el, index) => arr.indexOf(el) === index)
-    console.log(arr, 'mark');
+    let res = mark.filter(file => file.includes(_id))
+    const compareId = () => {
+        if(res.join() === _id) {
+
+            return <span onClick={unMarkFile}><b><FcBookmark size={'1.4em'}/></b> Unmark file</span>
+        }else {
+
+            return <span onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span> 
+        }
+    }
+
+    console.log(res);
 ///MARKFILE
 
     return (
@@ -102,8 +116,8 @@ const ContextMenu = ({ top, left }) => {
                 }
 
                 {/* MARK */}
-                {arr.length >= 1 
-                ? arr 
+                {mark.length >= 1 
+                ? compareId() 
 
                 : <span onClick={markFile}><b><FaBookmark size={'1.4em'}/></b> Mark file</span>}
             </div>

@@ -10,6 +10,8 @@ router.post('/avatar', authMiddleware, FileController.uploadAvatar)
 router.get('/download', authMiddleware, FileController.downloadFile)
 router.get('/search', authMiddleware, FileController.seacrchFile)
 router.get('/type', authMiddleware, FileController.seacrchType)
+router.get('/all', authMiddleware, FileController.searchAllfiles)
+
 router.get('', authMiddleware, FileController.getFiles)
 router.delete('/', authMiddleware, FileController.deleteFile)
 router.delete('/avatar', authMiddleware, FileController.deleteAvatar)

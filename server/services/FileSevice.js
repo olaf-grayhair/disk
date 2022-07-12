@@ -22,10 +22,30 @@ class FileService {
         }))
     }
 
-    // async getFiles(req) {
-    //     const files = await File.find({user: req.user.id, parent: req.query.parent})
-    //     return files
-    // }
+
+    uploadFiles(type) {
+        type = type.toLowerCase()
+        ///image
+        if(type === 'jpg' || type === 'jpeg' || type === 'png' || type === 'gif') {
+            return 'image'
+        }
+
+        ///text
+        if(type === 'txt' || type === 'pdf' || type === 'rtf' || type === 'docm' || type === 'docx' || type === 'csv') {
+            return 'text'
+        }
+
+        ///archive
+        if(type === 'zip' || type === 'tgz' || type === 'tar' || type === 'rar' || type === '7z') {
+            return 'archive'
+        }
+
+        ///media
+        if(type === 'mp3' || type === 'ape' || type === 'mp4' || type === 'mkv' || type === 'avi' || type === 'mov' || type === 'flv') {
+            return 'media'
+        }
+
+    }
 
     deleteFile(file) {
         const path = this.getPath(file)

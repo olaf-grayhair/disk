@@ -95,9 +95,14 @@ class FileController {
             if (parent) {
                 filePath = parent.path + "\\" + file.name
             }
+
+            const typeOffile = fileService.uploadFiles(type)
+            // console.log(typeOffile, 'UPLOADCONTROLL');
+            
             const dbFile = new File({
                 name: file.name,
                 type,
+                typeOffile,
                 size: file.size,
                 path: filePath,
                 parent: parent?._id,
@@ -167,6 +172,18 @@ class FileController {
             const searchName = req.query.search
             let files = await File.find({user: req.user.id})
             files = files.filter(file => file.type.includes(searchName))
+            return res.json(files)
+
+        } catch (e) {
+            return res.status(400).json({message: 'search error'})
+        }
+    }
+
+    async searchAllfiles(req, res) {
+        try {
+            // const searchName = req.query.search
+            let files = await File.find({user: req.user.id})
+            // files = files.filter(file => file.typeOffile.includes(searchName))
             return res.json(files)
 
         } catch (e) {
