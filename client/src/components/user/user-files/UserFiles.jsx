@@ -1,18 +1,23 @@
 import React from 'react';
 import style from './userfiles.module.scss'
-import { uploads } from '../../../utils/uploads';
-import pdf from '../../../assets/images/pdf.png'
 
-const UserFiles = ({}) => {
+const UserFiles = ({file, text, size, img}) => {
+
     return (
         <div className={style.userfiles}>
             <div className={style.item}>
-                <img src={pdf} alt="" />
-                <div className={style.info}>
-                    <h2>images</h2>
-                    <span>files</span>
+                <div className={style.img}>
+                    <img src={img} alt={file.name} />
                 </div>
-                <span>10GB</span>
+                <div className={style.info}>
+                    <h2>{text}</h2>
+                    <span className={style.length}>
+                        {file.length === 1 
+                        ? file.length + ' file'
+                        : file.length + ' files'} 
+                    </span>
+                </div>
+                <span className={style.size}>{size}</span>
             </div>
         </div>
     );

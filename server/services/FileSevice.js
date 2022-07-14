@@ -1,5 +1,5 @@
 const fs = require('fs')
-const file = require('../models/File')
+const File = require('../models/File')
 const config = require('config')
 const path = require('path');
 const { resolve } = require('path');
@@ -21,7 +21,29 @@ class FileService {
             }
         }))
     }
+    async getFiles(userId, query) {
+        const {sort} = query
+        let files
+        switch (sort) {
+            case 'name':
+                files = await File.find({user: userId, parent: query.parent}).sort({name:1})
+                break
+            case 'type':
+                files = await File.find({user: userId, parent: query.parent}).sort({type:1})
+                break
+            case 'date':
+                files = await File.find({user: userId, parent: query.parent}).sort({date:1})
+                break
+            case 'size':
+                files = await File.find({user: userId, parent: query.parent}).sort({size:1})
+                break
+            default:
+                files = await File.find({user: userId, parent: query.parent})
+        }    
 
+        return files
+
+    }
 
     uploadFiles(type) {
         type = type.toLowerCase()
@@ -57,28 +79,15 @@ class FileService {
         }
     }
 
-    renameFile(file, name, userId) {
+    renameFile(file, name) {
         const path = this.getPath(file)
-        // const imageDirPath = resolve(__dirname, 'new_img.jpg');
-        // console.log(imageDirPath, 'deleteFile');
+        const newPath = config.get('filePath') + '\\' + file.user + '\\' + name 
 
-        // if (file.type === 'dir') {
-        //     fs.renameSync( path, config.get('filePath') + '\\' + file.user + '\\' + 'new_dir' )
-        // } else {
-        //     fs.renameSync( path, config.get('filePath') + '\\' + userId + '\\' + name )
-        // }
-        
-        fs.renameSync( path, config.get('filePath') + '\\' + file.user + '\\' + name )
-
-        console.log(path, 'renameFILE', config.get('filePath') + '\\' + file.user + '\\' + name);
-    }//PATH ???
+        fs.renameSync( path, newPath )
+    }
 
     getPath(file) {
-        // const imageDirPath = resolve(__dirname, 'new_img.jpg');
-        // console.log(imageDirPath, 'getPath');
-
         return config.get('filePath') + '\\' + file.user + '\\' + file.path
-
     }
 }
 

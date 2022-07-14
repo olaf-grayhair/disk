@@ -4,12 +4,13 @@ const User = require('../models/User')
 const config = require('config')
 const fs = require('fs')
 const Uuid = require('uuid')
+const FileSevice = require('../services/FileSevice')
 
 class FileController {
     async createDir(req, res) {
         try{
             const {name, type, parent} = req.body
-            const file = new File({name, type, parent, user: req.user.id})
+            const file = new File({name, type, typeOffile: "dir", parent, user: req.user.id})
             const parentFile = await File.findOne({_id: parent})
             if(!parentFile) {
                 file.path = name
@@ -30,31 +31,8 @@ class FileController {
 
     async getFiles(req, res) {
         try {
-            const protocol = req.protocol
-            const host = req.hostname
-            const url = req.originalUrl
-            const port = process.env.PORT
-            //URL OF IMMAGES?
-            // console.log(`${protocol}://${host}:${port}${url}`, 'FULL_URL');
-            const {sort} = req.query
-            let files
-            switch (sort) {
-                case 'name':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
-                    break
-                case 'type':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
-                    break
-                case 'date':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date:1})
-                    break
-                case 'size':
-                    files = await File.find({user: req.user.id, parent: req.query.parent}).sort({size:1})
-                    break
-                default:
-                    files = await File.find({user: req.user.id, parent: req.query.parent})
-                    break;
-            }
+            const files = await FileSevice.getFiles(req.user.id,
+                req.query)
             return res.json(files)
         } catch (e) {
             return res.status(500).json({message: "Can not get files"})
@@ -123,7 +101,7 @@ class FileController {
     async downloadFile(req, res) {
         try{
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            // const path = config.get('filePath') + '\\' + req.user.id + '\\' + file.path + '\\' + file.name
+
             const path = fileService.getPath(file)
             if (fs.existsSync(path)) {
                 return res.download(path, file.name)
@@ -181,9 +159,7 @@ class FileController {
 
     async searchAllfiles(req, res) {
         try {
-            // const searchName = req.query.search
             let files = await File.find({user: req.user.id})
-            // files = files.filter(file => file.typeOffile.includes(searchName))
             return res.json(files)
 
         } catch (e) {
@@ -222,12 +198,11 @@ class FileController {
     async rename(req, res) {
         try {
             const file = req.body
+
             if(!file._id) {
                 return res.status(400).json({message : 'no ID'})
             }
             const oldFile = await File.findOne({_id: file._id})
-            console.log(oldFile.path, '__parentFile__');
-            console.log(file.path, '__file__');
 
             const updateFile = await File.findByIdAndUpdate(file._id, file, {new: true})
 

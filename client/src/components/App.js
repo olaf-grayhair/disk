@@ -13,11 +13,14 @@ import { showMenu } from "../reducers/userSlice";
 
 
 function App() {
-  const {isAuth, user} = useSelector((state) => state.user)
+  const {isAuth, user, showContextMenu} = useSelector((state) => state.user)
   const dispatch = useDispatch()
   
   const closeMenu = (e) => {
-    dispatch(showMenu(false))
+    if(showContextMenu) {
+      dispatch(showMenu(false))
+    }
+
   }
 
   useEffect(() => {

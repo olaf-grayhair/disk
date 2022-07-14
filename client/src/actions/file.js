@@ -10,7 +10,9 @@ import { slicePath } from '../utils/slicePath';
 
 export const getFiles = (dirId, sort) => {
     return async (dispatch) => {
+        
         let url = `files`
+
         if (dirId) {
             url = `files?parent=${dirId}`
         }
@@ -22,7 +24,13 @@ export const getFiles = (dirId, sort) => {
         }
         try{
             dispatch(loading(true))
-            dispatch(setView(localStorage.getItem('setView')))
+
+            if(localStorage.getItem('setView') !== null) {
+                dispatch(setView(localStorage.getItem('setView')))
+            }else {
+                dispatch(setView('list'))
+            }
+            
             const response = await instance.get(url)
             dispatch(setFiles(response.data))
         }catch(e) {

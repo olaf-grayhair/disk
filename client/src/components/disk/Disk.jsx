@@ -56,7 +56,7 @@ const Disk = () => {
         const files = [...e.target.files]
         files.forEach(file => dispatch(uploadFile(file, currentDir)))
     }
-
+    ///view btn
     const setGridView = () => {
         dispatch(setView('grid'))
         localStorage.setItem('setView','grid')
@@ -81,12 +81,12 @@ const Disk = () => {
                 <div className={style.btn__right}>
                     <Sort setSort={setSort}/>
                     <button className={style.btn} 
-                    onClick={setListView}>
+                        onClick={setListView}>
                         <FaListUl size={'1.2em'}/>
                     </button>
 
                     <button className={style.btn}
-                    onClick={setGridView}>
+                        onClick={setGridView}>
                         <BsFillGrid3X3GapFill size={'1.2em'}/>
                     </button>
                 </div>

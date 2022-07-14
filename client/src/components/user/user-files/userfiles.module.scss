@@ -1,11 +1,40 @@
+@import '../../../utils/colors.scss';
+
 .userfiles{
-    width: 260px;
+    width: 360px;
 
     .item{
         height: 80px;
-        display: flex;
+        display: grid;
+        grid-template-columns: .5fr 1fr auto;
         align-items: center;
-        justify-content: space-between;
         padding: 20px 10px;
+        .img{
+            width: 58px;
+            height: 58px;
+            background-color: rgb(74, 73, 73);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            img{
+                width: 40px;
+                height: 40px;
+            }
+        }
+        .info{
+            h2{
+                text-transform: capitalize;
+            }
+            .length{
+                color: $background-color;
+                font-size: 16px;
+            }
+        }
+        .size{
+            font-size: 20px;
+            font-weight: 800;
+            color: $btn;
+        }
     }
 }

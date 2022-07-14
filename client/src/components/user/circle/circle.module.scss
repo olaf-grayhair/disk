@@ -1,0 +1,23 @@
+.circle__block{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .circle{
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+
+    .block{
+        display: flex;
+        flex-direction: column;
+        span{
+            font-size: 14px;
+        }
+        .bold{
+            font-size: 18px;
+        }
+    }
+}
+

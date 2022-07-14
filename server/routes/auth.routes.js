@@ -10,7 +10,7 @@ router.post('/registration',
     [
         check('email', 'wrong email').isEmail(),
         check('password', 'Password must be longer than 3 and shorted than 12').isLength({min:3, max:12})
-    ],
+    ],///ВЫНЕСТИ В ОТДЕЛЬНЫЙ ФАЙЛ auth.js
     AuthController.create
 )
 

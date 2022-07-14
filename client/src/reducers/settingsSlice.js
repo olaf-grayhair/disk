@@ -41,24 +41,8 @@ const settingsSlice = createSlice({
         setAllFiles(state, actions) {
             state.allFiles = actions.payload
         },
-
-
-
         setMarkFiles(state, actions) {
             state.markFiles = actions.payload
-            // localStorage.setItem('mark', JSON.stringify(state.markFiles))
-
-            // const array = JSON.parse(localStorage.getItem('mark'))
-            // let arr = [...array]
-            // if(array) {
-            //     debugger
-            //     state.markFiles = array
-            //     state.markFiles.push(actions.payload) 
-            // }else {
-            //     state.markFiles.push(actions.payload) 
-            //     localStorage.setItem('mark', JSON.stringify(state.markFiles))
-            // }
-
         },
         deleteMarkFiles(state, actions) {
             state.markFiles.map((file, index) => file === actions.payload ? state.markFiles.splice(index, 1) : file)

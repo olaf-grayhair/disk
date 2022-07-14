@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import { sizeOfFiles } from '../../utils/sizeOfFiles';
 import style from './user.module.scss'
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 import UserInfo from './user-info/UserInfo';
 import Button from '../../UI/button/Button';
 import { getAllFiles } from '../../actions/file';
 import UserFiles from './user-files/UserFiles';
+import Circle from './circle/Circle';
+import { uploads } from '../../utils/uploads';
+import Loader from '../../utils/loader/Loader'
 
 const User = () => {
     const history = useNavigate()
@@ -18,9 +19,19 @@ const User = () => {
     const {diskSpace, usedSpace, email, avatar, name} = useSelector(state => state.user.user)
 
     const value = Math.round((usedSpace / diskSpace) * 100)
-//////NEW
+    //////disk info
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAllFiles())
+    }, []);
+
     const files = useSelector(state => state.settings.allFiles)
+
+    if (files.length === 0 ) {
+        console.log('files');
+        return <Loader/> 
+    }
 
     let array = [...files]
 
@@ -31,64 +42,59 @@ const User = () => {
     const fileSize = (array) => {
         return array.reduce((a, b) => a + b.size, 0)
          
-     }
-     console.log(array);
-    // const text = searchFile('text') 
-    // const archive = searchFile('archive')
-    // const media = searchFile('media')
-    const image = array.filter(file => file.typeOffile.includes('image'))
+    }  
 
+    const text = searchFile('text') 
+    const archive = searchFile('archive')
+    const media = searchFile('media')
+    const image = searchFile('image')
 
-    console.log(image);
-    let a = fileSize(image)
-    console.log(a);
-
-
-    useEffect(() => {
-        dispatch(getAllFiles())
-    }, []);
-    
     return (
         <div className={style.user}>
             <Button
             name={'back'}
             action={returnPrev}
             />
-            <div className={style.user__wrap}>
+            <div className={style.user__info}>
                 <UserInfo 
                  avatar={avatar}
                  email={email}
                  name={name}
                  />
-                <div className={style.wrap}>
-                    <div className={style.circul__block}>
-                        <div className={style.circul}>
-                            <CircularProgressbar value={value} text={`${value}%`}/>
-                        </div>
-                        <span>Used space  
-                            <b className={style.bold}> {sizeOfFiles(usedSpace)}</b>
-                        </span>
-                    </div>
+                 <div className={style.user__disk}>
+                    <div className={style.circle__block}>
+                        <Circle value={value} text={'Used space'} size={sizeOfFiles(usedSpace)}/>
 
-                    <div className={style.circul__block}>
-                        <div className={style.circul}>
-                            <CircularProgressbar value={100 - value} text={`${100 - value}%`}/>
-                        </div>
-                        <span>Free space  
-                            <b className={style.bold}> {sizeOfFiles(diskSpace -usedSpace)}</b>
-                        </span>
+                        <Circle value={100 - value} text={'Free space'}
+                        size={sizeOfFiles(diskSpace - usedSpace)}/>
                     </div>
-                    
-                    <div className={style.circul__block}>
-                        <div className={style.circul}>
-                            <CircularProgressbar value={100} text={`${100}%`}/>
-                        </div>
-                        <span>Total space  
-                            <b className={style.bold}> {sizeOfFiles(diskSpace)}</b>
-                        </span>
+                    <div className={style.block}>
+                        <UserFiles 
+                            file={image} 
+                            text={"images"} 
+                            img={uploads(image[0].type)}
+                            size={sizeOfFiles(fileSize(image))}
+                        />
+                        <UserFiles 
+                            file={text}
+                            text={"documents"} 
+                            img={uploads(text[0].type)}
+                            size={sizeOfFiles(fileSize(text))}
+                        />
+                        <UserFiles 
+                            file={archive}
+                            text={"archive"} 
+                            img={uploads(archive[0].type)}
+                            size={sizeOfFiles(fileSize(archive))}
+                        />
+                        <UserFiles 
+                            file={media}
+                            text={"media"} 
+                            img={uploads(media[0].type)}
+                            size={sizeOfFiles(fileSize(media))}
+                        />
                     </div>
-                </div>
-                <UserFiles file={image}/>
+                 </div>
             </div>
         </div>
     );

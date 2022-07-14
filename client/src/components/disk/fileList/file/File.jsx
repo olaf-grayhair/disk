@@ -42,6 +42,9 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         if (fileType === 'mp3' || fileType === 'ape' || fileType === 'avi') {
             setTxtFile(true)
         }
+        if (fileType === 'pdf') {
+            setTxtFile(true)
+        }
     }
     ///chandgePAge
     const compareImg = () => {
@@ -55,7 +58,6 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         e.preventDefault()
         openMenu(e)
         dispatch(setContextMenu({ _id, name, staticPath, type }))
-        // dispatch(popupMenuState(false))
     }
 
     ///popup
@@ -98,6 +100,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         dispatch(changeDirectory(id, name, path, userId, parent))
     }
 
+    console.log(API_URL + staticPath);
     if (view === 'list') {
         return (
             <>
