@@ -69,8 +69,8 @@ class FileService {
 
     }
 
-    deleteFile(file) {
-        const path = this.getPath(file)
+    deleteFile(req, file) {
+        const path = this.getPath(req, file)
 
         if (file.type === 'dir') {
             fs.rmdirSync(path)
@@ -79,15 +79,15 @@ class FileService {
         }
     }
 
-    renameFile(file, name) {
-        const path = this.getPath(file)
-        const newPath = config.get('filePath') + '\\' + file.user + '\\' + name 
+    renameFile(req, file, name) {
+        const path = this.getPath(req, file)
+        const newPath = req.filePath + '\\' + file.user + '\\' + name 
 
         fs.renameSync( path, newPath )
     }
 
-    getPath(file) {
-        return config.get('filePath') + '\\' + file.user + '\\' + file.path
+    getPath(req, file) {
+        return req.filePath + '\\' + file.user + '\\' + file.path
     }
 }
 

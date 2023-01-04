@@ -12,7 +12,9 @@ class AuthController {
     }
 
     async login(req, res) {
+        // console.log(req, 'req', 'AUTHCONT');
         try{
+            console.log(req.body, 'user');
             const user = await AuthService.login(req.body)
             return res.json(user)
         }catch (e) {

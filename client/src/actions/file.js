@@ -86,7 +86,7 @@ export const uploadFile = (file, dirId) => {
 }
 
 export async function dowloadFile(id, name) {
-    const response = await fetch(`http://localhost:5000/api/files/download?id=${id}`,{
+    const response = await fetch(`http://disk.oleh-oskin.shop/api/files/download?id=${id}`,{
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }

@@ -8,6 +8,8 @@ const File = require('../models/File')
 
 class AuthController {
     async create(request) {
+        // console.log(request, 'req');
+
         const errors = validationResult(request)
         if(!errors.isEmpty()) {
             throw new Error('Uncorrect request')
@@ -29,6 +31,7 @@ class AuthController {
 
     async login(login) {
         const {email, password} = login
+        console.log(email, password, 'serv');
         const user = await User.findOne({email})
         if(!user) {
             throw new Error('user not found')

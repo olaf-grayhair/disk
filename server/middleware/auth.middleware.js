@@ -6,6 +6,7 @@ module.exports = (req, res, next) => {//cors
        return next()
     }
 
+    console.log(req.body, 'midl');
     try {
         const token = req.headers.authorization.split(' ')[1]
         if (!token) {
