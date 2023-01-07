@@ -142,7 +142,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
                     popupDisplay={popupMove}
                     cansel={closePopup}
                     action={copyLink}
-                    btnName={'copy'}
+                    btnName={'move'}
                     move={moveOneFile}
                 />
             </>

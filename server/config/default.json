@@ -1,5 +1,5 @@
 {
-    "serverPort": 5000,
+    "serverPort": 3004,
     "dbUrl": "mongodb+srv://coldworld:RG5tdtFCpyMNf6a@cloud.mvbvr.mongodb.net/?retryWrites=true&w=majority",
     "secretKey": "secret-key",
     "filePath": "/home/oleh/work/React-app/REACT/disk/server/files",

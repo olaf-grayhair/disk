@@ -17,19 +17,17 @@ const FileList = () => {
     const loader = useSelector(state => state.settings.loader)
     const view = useSelector(state => state.settings.view)
 
+
+    ///FIX DROP
     function dragEnterHandler(e) {
         e.preventDefault()
         e.stopPropagation()
-        // setDragEnter(true)
-        // e.target.style.background = "gray";
-        // console.log(e.target);
     }
 
     function dragLeaveHandler(e) {
         e.preventDefault()
         e.stopPropagation()
         setDragEnter(false)
-        // e.target.style.background = "white";
     }
 
     function dropHandler(e) {

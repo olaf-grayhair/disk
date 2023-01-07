@@ -1,32 +1,30 @@
 const User = require('../models/User')
 const {check, validationResult} = require("express-validator")
 const bcrypt = require("bcrypt")//password hashing
-const config = require('config')
+// const config = require('config')
 const jwt = require('jsonwebtoken')
 const fileService = require('../services/FileSevice')
 const File = require('../models/File')
 
-class AuthController {
-    async create(request) {
-        // console.log(request, 'req');
+class AuthService{
+    async create(req) {
 
-        const errors = validationResult(request)
+        const errors = validationResult(req)
         if(!errors.isEmpty()) {
             throw new Error('Uncorrect request')
         }
 
-        const {email, password} = request.body
+        const {email, password} = req.body
         const candidate = await User.findOne({email})
-        console.log(candidate, 'ERROR IN SERVICE');
-        
+        // console.log(candidate, 'ERROR IN SERVICE');
         if(candidate) {
             throw new Error(`User with email ${email} already exist`)
         }
-
+        
         const hashPassword = await bcrypt.hash(password, 8)
         const user = new User({email, password: hashPassword})
         await user.save()
-        await fileService.createDir(new File({user:user.id, name: ''}))
+        await fileService.createDir(req, new File({user:user.id, name: ''}))
     }
 
     async login(login) {
@@ -43,7 +41,7 @@ class AuthController {
             throw new Error('ivalid password')
         }
 
-        const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
+        const token = jwt.sign({id: user.id}, process.env.SECRET_KEY, {expiresIn: "10h"})
         const userItem = {
             token,
             user: {
@@ -59,7 +57,8 @@ class AuthController {
     
     async auth(authUser) {
         const user = await User.findOne({_id:authUser})
-        const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "10h"})
+        const token = jwt.sign({id: user.id}, process.env.SECRET_KEY, {expiresIn: "10h"})
+
         const userItem = {
             token,
             user: {
@@ -75,4 +74,4 @@ class AuthController {
 }
 
 
-module.exports =  new AuthController();
+module.exports =  new AuthService();

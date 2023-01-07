@@ -9,7 +9,7 @@ import { FaFolder } from 'react-icons/fa';
 import { setPopupMove } from '../../reducers/settingsSlice';
 import { delFile } from '../../reducers/fileSlice';
 
-const Modal = ({popupDisplay, cansel}) => {
+const Modal = ({popupDisplay, cansel, btnName}) => {
     const dispatch = useDispatch()
 
     const files = useSelector(state => state.settings.directories)
@@ -20,7 +20,8 @@ const Modal = ({popupDisplay, cansel}) => {
     const [index, setIndex] = useState(0);
 
     let lastFolder = dirStack[dirStack.length - 1].name
-    let folderName = dirStack.map(el => el.name + ' \\ ')
+    let folderName = dirStack.map(el => el.name + ' / ')
+    ///foldername was '\\' ? 
 
     const [obj, setobj] = useState({
         id: null, 
@@ -94,7 +95,7 @@ const Modal = ({popupDisplay, cansel}) => {
                 </div>
                 <div className={style.btn__block}>
                     <ButtonWhite name={'cansel'} action={closePopup}/>
-                    <Button name={'Create'} action={changeDir}/>
+                    <Button name={'Move'} action={changeDir}/>
                 </div>
             </div>
         </div>

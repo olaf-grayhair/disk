@@ -2,6 +2,7 @@ const AuthService = require('../services/AuthService')
 
 class AuthController {
     async create(req, res) {
+        console.log(req.filePath, 'AUTH');
         try{
             await AuthService.create(req)
             return res.json({message: 'User was created !!!'})

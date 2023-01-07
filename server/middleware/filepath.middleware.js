@@ -1,6 +1,9 @@
 function filePath(path) {
     return function(req, res, next) {
         req.filePath = path
-        next(   )
+        // console.log(req.filePath, 'cors file');
+        next()
     }
 }
+
+module.exports = filePath

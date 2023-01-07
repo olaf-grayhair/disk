@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { instance } from '../utils/instance';
+import { baseURL, instance } from '../utils/instance';
 import { log, reg } from '../reducers/userSlice'
 
 export const registration = async (email, password) => {
     console.log(email, password, 'email, password');
     try{
-        const response = await axios.post('http://disk.oleh-oskin.shop/api/auth/registration', {
+        const response = await axios.post(`${baseURL}auth/registration`, {
             email,
             password
         })
@@ -21,7 +21,7 @@ export const registration = async (email, password) => {
 export const login = (email, password) => {
     return async (dispatch) => {
         try{
-            const response = await axios.post('http://disk.oleh-oskin.shop/api/auth/login', {
+            const response = await axios.post(`${baseURL}auth/login`, {
                 email,
                 password
             });

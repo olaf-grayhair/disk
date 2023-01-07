@@ -2,13 +2,13 @@
 // const LOGIn = 'coldworld'
 // const PASS = 'RG5tdtFCpyMNf6a'
 const express = require("express")
-const mongoose = require("mongoose")
-const config = require("config")
+const mongoose = require("mongoose")    
+require('dotenv').config()
 const fileUpload = require("express-fileupload")
 const authRouter = require("./routes/auth.routes")
 const fileRouter = require("./routes/file.routes")
 const app = express()
-const PORT = process.env.PORT || config.get('serverPort')
+const PORT = process.env.PORT || 3004
 const corsMiddleware = require('./middleware/cors.middleware')
 const filePathMiddleware = require('./middleware/filepath.middleware')
 const path = require('path')
@@ -26,10 +26,12 @@ app.use('/api/files', fileRouter)
 
 const start = async() => {
     try {
-        await mongoose.connect(config.get('dbUrl'))
+        await mongoose.connect(process.env.DB_NAME)
 
         app.listen(PORT, () => {
             console.log('server started on port ', PORT);
+
+            // console.log(path.resolve(__dirname, 'files'), 'path');
         })
     } catch (e) {
         console.log(e, 'index error');

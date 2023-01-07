@@ -5,18 +5,25 @@ const path = require('path');
 const { resolve } = require('path');
 
 class FileService {
-    createDir(file) {
-        const filePath = this.getPath(file)
+    createDir(req, file) {
+        const filePath = this.getPath(req,file)
 
+        // console.log(filePath, 'filePath');
+        
         return new Promise(((resolve, reject) => {
             try {
                 if (!fs.existsSync(filePath)) {
                     fs.mkdirSync(filePath, { recursive: true })
+                    console.log('promice if');
+
                     return resolve({message: 'File was created'})
                 } else {
+                    console.log('promice else');
+
                     return reject({message: "File already exist"})
                 }
             } catch (e) {
+                console.log('reject');
                 return reject({message: 'File error in Fileservice'})
             }
         }))
@@ -81,13 +88,18 @@ class FileService {
 
     renameFile(req, file, name) {
         const path = this.getPath(req, file)
-        const newPath = req.filePath + '\\' + file.user + '\\' + name 
+        const newPath = `${req.filePath}/${file.user}/${name}`
+        console.log(path, 'rename_path');
+        console.log(newPath, 'rename_newPath');
+
+        // const newPath = req.filePath + '\\' + file.user + '\\' + name 
 
         fs.renameSync( path, newPath )
     }
 
     getPath(req, file) {
-        return req.filePath + '\\' + file.user + '\\' + file.path
+        // return req.filePath + '\\' + file.user + '\\' + file.path
+        return `${req.filePath}/${file.user}/${file.path}`
     }
 }
 

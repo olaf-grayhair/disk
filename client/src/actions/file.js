@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { addFile, delFile, mvFile, renameAction, setFiles } from '../reducers/fileSlice';
 import { loading, setAllFiles, setDirectories, setView } from '../reducers/settingsSlice';
 import { setProgress, setUploadFiles } from '../reducers/uploadSlice';
-import { instance, SetState } from '../utils/instance';
+import { baseURL, instance, SetState } from '../utils/instance';
 import { slicePath } from '../utils/slicePath';
 
 
@@ -86,7 +86,7 @@ export const uploadFile = (file, dirId) => {
 }
 
 export async function dowloadFile(id, name) {
-    const response = await fetch(`http://disk.oleh-oskin.shop/api/files/download?id=${id}`,{
+    const response = await fetch(`${baseURL}/files/download?id=${id}`,{
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -158,32 +158,10 @@ export const getAllFiles = () => {
 
 export const renameFile = (name, id, userId, parent, staticPath, path) => {
     return async (dispatch) => {
-        let file = {}
-        let fullPath = slicePath(staticPath)
-        let fullName = slicePath(path)
-        console.log(fullName, 'staticPath');
-        console.log(fullPath, 'fullPath');
-
-        if(parent) {
-            console.log('???');
-            file = {
-                name: name,
-                path: fullName + '\\' + name,
-                staticPath: fullPath + '\\' + name,
-                _id: id
-            }
-        }else {
-            file = {
-                name, 
-                path: name, // 1/name???
-                staticPath: userId + '\\' + name, 
-                _id: id
-            }
-        }
-
+        ///delete userId, parent, staticPath, path in componet !!
         try{
             const response = await instance.put(`files`, 
-            file)                               
+            {id, name})                               
             dispatch(renameAction(response.data))
             console.log(response.data);
         }catch(e) {
@@ -196,27 +174,10 @@ export const changeDirectory = (obj) => {
     return async (dispatch) => {
         const {id, name, path, userId, parent} = obj
         console.log(id, name, path, userId, parent);
-        let file = {}
-        if(parent === null) {
-            file = {
-                path: name,
-                parent: null,
-                staticPath: userId + '\\' + name,
-                _id: id
-            }
-        }else {
-            file = {
-                path: path + '\\' + name,
-                parent,
-                staticPath: userId + '\\' + path + '\\' + name,
-                _id: id
-            }
-        }
-
-        console.log(file, 'FETCH');
+        ////problem in change dir(wron 'parent')
         try{
-            const response = await instance.put(`files`, 
-            file)                               
+            const response = await instance.put(`files/move`, 
+            {parent, id})                               
             dispatch(mvFile(response.data))
             console.log(response.data);
         }catch(e) {
