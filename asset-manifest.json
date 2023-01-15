@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/disk/tree/main/client/static/css/main.0a7ebdd3.css",
+    "main.js": "/disk/tree/main/client/static/js/main.a084854a.js",
+    "static/media/user.png": "/disk/tree/main/client/static/media/user.a6143582309785dca610.png",
+    "static/media/cloud-logo.png": "/disk/tree/main/client/static/media/cloud-logo.a538757b3b8fad41a910.png",
+    "static/media/dir.png": "/disk/tree/main/client/static/media/dir.05723ffc4e627a971035.png",
+    "static/media/empty-folder.png": "/disk/tree/main/client/static/media/empty-folder.ebf4718560a0e378f739.png",
+    "static/media/mp3.png": "/disk/tree/main/client/static/media/mp3.513706fbb76fa001cd87.png",
+    "static/media/arrow.svg": "/disk/tree/main/client/static/media/arrow.a0f81365cc9f563fa19c.svg",
+    "index.html": "/disk/tree/main/client/index.html",
+    "main.0a7ebdd3.css.map": "/disk/tree/main/client/static/css/main.0a7ebdd3.css.map",
+    "main.a084854a.js.map": "/disk/tree/main/client/static/js/main.a084854a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0a7ebdd3.css",
+    "static/js/main.a084854a.js"
+  ]
+}
