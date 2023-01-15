@@ -20,7 +20,6 @@ function App() {
     if(showContextMenu) {
       dispatch(showMenu(false))
     }
-
   }
 
   useEffect(() => {

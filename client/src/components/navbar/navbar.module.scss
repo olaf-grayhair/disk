@@ -13,7 +13,7 @@
     }
 
     .login{
-        width: 500px;
+        width: 300px;
         display: flex;
         justify-content: space-between;
     }
@@ -22,17 +22,24 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .text{
-            cursor: pointer;
+
+        .userPanel{
             display: flex;
+            width: 120px;
             justify-content: space-between;
-            align-items: center;
+            .text{
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            img{
+                width: 40px;
+                height: 40px;
+                margin-left: 10px;
+            }
         }
-        img{
-            width: 40px;
-            height: 40px;
-            margin-left: 10px;
-        }
+
     }
 
 }

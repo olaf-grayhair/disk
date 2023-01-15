@@ -1,14 +1,10 @@
 const fs = require('fs')
 const File = require('../models/File')
-const config = require('config')
-const path = require('path');
 const { resolve } = require('path');
 
 class FileService {
     createDir(req, file) {
         const filePath = this.getPath(req,file)
-
-        // console.log(filePath, 'filePath');
         
         return new Promise(((resolve, reject) => {
             try {
@@ -89,16 +85,11 @@ class FileService {
     renameFile(req, file, name) {
         const path = this.getPath(req, file)
         const newPath = `${req.filePath}/${file.user}/${name}`
-        console.log(path, 'rename_path');
-        console.log(newPath, 'rename_newPath');
-
-        // const newPath = req.filePath + '\\' + file.user + '\\' + name 
 
         fs.renameSync( path, newPath )
     }
 
     getPath(req, file) {
-        // return req.filePath + '\\' + file.user + '\\' + file.path
         return `${req.filePath}/${file.user}/${file.path}`
     }
 }

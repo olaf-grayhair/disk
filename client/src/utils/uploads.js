@@ -13,10 +13,10 @@ export const splitFile = (nameOfFile) => {
 
 export const uploads = (item) => {
     let file = item.toLowerCase()
-    if(file === 'png' || file === 'jpg' || file === 'gif') {
+    if(file === 'png' || file === 'jpg' || file === 'gif' || file === 'jpeg') {
         return img
     }
-    if(file === 'txt') {
+    if(file === 'txt' || file === 'docx') {
         return txt
     }
     if(file === 'zip') {

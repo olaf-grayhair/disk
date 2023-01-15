@@ -1,13 +1,8 @@
 import React from 'react';
 import style from './audio.module.scss'
 import ReactAudioPlayer from 'react-audio-player';
-import { AiFillCloseCircle } from 'react-icons/ai';
 
-const Audio = ({ file, setTxtFile }) => {
-    const hide = () => {
-        setTxtFile(false)
-    }
-
+const Audio = ({ file }) => {
 
     return (
         <div className={style.audio}>
@@ -17,7 +12,6 @@ const Audio = ({ file, setTxtFile }) => {
                     autoPlay
                     controls
                 />
-                <div className={style.hide} onClick={hide}><AiFillCloseCircle/></div>
             </div>
         </div>
     );

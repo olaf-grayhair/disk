@@ -14,12 +14,6 @@ const ProgressBar = () => {
     const dispatch = useDispatch()
     const {isHide, isClose, files} = useSelector(state => state.upload)
 
-    const arr = [
-        { name: "file.css", img: "http://localhost:3000/static/media/mp3.513706fbb76fa001cd87.png" },
-        { name: "file.css", img: "http://localhost:3000/static/media/mp3.513706fbb76fa001cd87.png" },
-        { name: "file.css", img: "http://localhost:3000/static/media/mp3.513706fbb76fa001cd87.png" },
-    ]
-
     const close = () => {
         dispatch(setDeletUploadFiles())
         dispatch(setClose(false))

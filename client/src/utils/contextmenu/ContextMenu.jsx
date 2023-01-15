@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteFile, dowloadFile, searchDir } from '../../actions/file';
 import { popupMenuState } from '../../reducers/fileSlice';
 import { showMenu } from '../../reducers/userSlice';
-import { API_URL } from '../urls';
+
 import style from './contextmenu.module.scss'
 import { deleteMarkFiles, setMarkFiles, setPopupLink, setPopupMove, setPopupState } from '../../reducers/settingsSlice';
 
@@ -11,6 +11,7 @@ import { AiOutlineCloudDownload, AiOutlineLink, AiFillDelete } from 'react-icons
 import { MdDriveFileRenameOutline, MdDriveFileMoveOutline } from 'react-icons/md';
 import { FaBookmark } from 'react-icons/fa';
 import { FcBookmark } from 'react-icons/fc';
+import { baseURL } from '../instance';
 
 
 const ContextMenu = ({ top, left }) => {
@@ -44,7 +45,7 @@ const ContextMenu = ({ top, left }) => {
     const getLink = (e) => {
         e.stopPropagation()
         dispatch(setPopupState(true))
-        dispatch(setPopupLink(API_URL + staticPath))
+        dispatch(setPopupLink(baseURL + staticPath))
         dispatch(showMenu(false))
     }
 

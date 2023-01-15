@@ -3,14 +3,14 @@ import { baseURL, instance } from '../utils/instance';
 import { log, reg } from '../reducers/userSlice'
 
 export const registration = async (email, password) => {
-    console.log(email, password, 'email, password');
+
     try{
         const response = await axios.post(`${baseURL}auth/registration`, {
             email,
             password
         })
-        alert(response.data.message)
-        console.log('registration');
+        alert(response.data.message, 'you can login')
+        
 
     }catch(e) {
         console.log(e.response.data.message);
@@ -19,6 +19,7 @@ export const registration = async (email, password) => {
 }
 
 export const login = (email, password) => {
+    localStorage.removeItem('token')
     return async (dispatch) => {
         try{
             const response = await axios.post(`${baseURL}auth/login`, {
@@ -27,7 +28,6 @@ export const login = (email, password) => {
             });
 
             dispatch(log(response.data.user))
-            console.log(response.data.user, 'TRY');
             localStorage.setItem('token',response.data.token)
         }catch(e) {
             // alert(e.response.data.message)

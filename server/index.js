@@ -19,8 +19,8 @@ app.use(filePathMiddleware(path.resolve(__dirname, 'files')))
 app.use(express.json())
 app.use(express.static('files'))
 app.use(express.static('static'))
-app.use('/api/auth', authRouter)
-app.use('/api/files', fileRouter)
+app.use('/auth', authRouter)
+app.use('/files', fileRouter)
 
 
 

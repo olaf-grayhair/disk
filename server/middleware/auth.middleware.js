@@ -12,6 +12,8 @@ module.exports = (req, res, next) => {//cors
         if (!token) {
             return res.status(401).json({message: 'Auth error'})
         }
+
+        
         const decoded = jwt.verify(token, config.get('secretKey'))
         // console.log(req, 'decoded');
         req.user = decoded

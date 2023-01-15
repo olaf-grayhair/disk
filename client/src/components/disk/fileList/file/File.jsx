@@ -5,18 +5,15 @@ import { addNav, popupMenuState, setCurrentDir } from '../../../../reducers/file
 import { setContextMenu, setMenu } from "../../../../reducers/userSlice";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { changeDirectory, deleteFile, dowloadFile, renameFile } from '../../../../actions/file';
+import { changeDirectory, renameFile } from '../../../../actions/file';
 import { sizeOfFiles } from '../../../../utils/sizeOfFiles.js';
 import FileOpen from './file-open/FileOpen'
-import { setPopupLink, setPopupMove, setPopupState, setShowFile } from '../../../../reducers/settingsSlice';
+import { setPopupMove, setPopupState } from '../../../../reducers/settingsSlice';
 import { splitFile, uploads } from '../../../../utils/uploads';
-import { API_URL } from '../../../../utils/urls';
 import Popup from '../../../popup/Popup';
-
 import { FcBookmark } from 'react-icons/fc';
 import Modal from '../../../modal/Popup';
-import { onChange, reader } from '../../../../utils/fileOpen';
-import Audio from '../../../audio/Audio';
+import { baseURL } from '../../../../utils/instance';
 
 
 const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent }) => {
@@ -24,8 +21,7 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     const view = useSelector(state => state.settings.view)
     const showFile = useSelector(state => state.settings.showFile)
     ///set type files
-    const [state, setstate] = useState(false);
-    const [txtFile, setTxtFile] = useState(false);
+    const [popup, setPopup] = useState(false);
     ///chandgePAge
     const { files, currentDir, dirCount } = useSelector((state) => state.file)
 
@@ -36,15 +32,8 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
             const pushItem = { name, _id, id: dirCount + 1 }
             dispatch(addNav(pushItem))
         }
-        if (fileType === 'jpg' || fileType === 'png' || fileType === 'gif') {
-            setstate(true)
-        }
-        if (fileType === 'mp3' || fileType === 'ape' || fileType === 'avi') {
-            setTxtFile(true)
-        }
-        if (fileType === 'pdf') {
-            setTxtFile(true)
-        }
+
+        else setPopup(true)
     }
     ///chandgePAge
     const compareImg = () => {
@@ -100,18 +89,27 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
         dispatch(changeDirectory(id, name, path, userId, parent))
     }
 
-    console.log(API_URL + staticPath);
+    const file = baseURL + staticPath
+    const docs = [
+        { uri: file }, // Local File
+    ];
+
     if (view === 'list') {
         return (
             <>
-                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath} />}
-                {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
+
+                {popup && <FileOpen
+                    type={type}
+                    filePath={staticPath}
+                    setstate={setPopup} />
+                }
+
                 <div className={style.list}
                     onClick={changePage}
                     onContextMenu={openContextMenu}
                 >
                     <img src={compareImg()
-                        ? API_URL + staticPath
+                        ? baseURL + staticPath
                         : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
                     <span className={style.mark}>
@@ -152,14 +150,18 @@ const File = ({ name, type, size, date, _id, openMenu, path, staticPath, parent 
     if (view === 'grid') {
         return (
             <>
-                {txtFile && <Audio setTxtFile={setTxtFile} file={API_URL + staticPath} type={type}/>}
-                {state && <FileOpen img={staticPath} setstate={setstate} state={state} />}
+                {popup && <FileOpen
+                    type={type}
+                    filePath={staticPath}
+                    setstate={setPopup} />
+                }
+
                 <div className={style.grid}
                     onClick={changePage}
                     onContextMenu={openContextMenu}
                 >
                     <img src={compareImg()
-                        ? API_URL + staticPath
+                        ? baseURL + staticPath
                         : uploads(splitFile(name))} alt={name} />
                     <span>{name}</span>
                     <span className={style.mark}>

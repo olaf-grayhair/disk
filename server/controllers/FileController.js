@@ -1,7 +1,7 @@
 const fileService = require('../services/FileSevice')
 const File = require('../models/File')
 const User = require('../models/User')
-// const config = require('config')
+const sharp = require('sharp');
 const fs = require('fs')
 const Uuid = require('uuid')
 const FileSevice = require('../services/FileSevice')
@@ -66,8 +66,6 @@ class FileController {
                 staticPath = `${user._id}/${file.name}`
             }
 
-            console.log('----', staticPath, 'upload', path);
-
             if (fs.existsSync(path)) {
                 return res.status(400).json({ message: 'File already exist' })
             }
@@ -82,7 +80,6 @@ class FileController {
             }
 
             const typeOffile = fileService.uploadFiles(type)
-            // console.log(typeOffile, 'UPLOADCONTROLL');
 
             const dbFile = new File({
                 name: file.name,
@@ -178,10 +175,24 @@ class FileController {
         try {
             const file = req.files.file
             const user = await User.findById(req.user.id)
-            const avatarName = Uuid.v4() + ".jpg"
-            file.mv(`${req.filePath}/${avatarName}`)
-            ///up
-            user.avatar = avatarName
+            console.log(req.files, 'file');
+
+            const index = file.name.lastIndexOf('.');
+            const format = file.name.slice(index + 1)
+            const avatarName = Uuid.v4() + '.' + format
+
+            const filePath = `${req.filePath}/${user._id}/${avatarName}`
+
+            try {
+                await sharp(file.data)
+                .resize({with:200, height:200})
+                .toFormat(`jpeg`, { mozjpeg: true }) 
+                .toFile(filePath); 
+            } catch (error) {
+                console.log(error);
+            }
+
+            user.avatar = `${user._id}/${avatarName}`
             await user.save()
             return res.json(user)
         } catch (e) {

@@ -22,6 +22,7 @@ const FileList = () => {
     function dragEnterHandler(e) {
         e.preventDefault()
         e.stopPropagation()
+        setDragEnter(true)
     }
 
     function dragLeaveHandler(e) {

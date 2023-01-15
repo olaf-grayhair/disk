@@ -1,11 +1,10 @@
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
 
+import axios from 'axios';
 import { addFile, delFile, mvFile, renameAction, setFiles } from '../reducers/fileSlice';
 import { loading, setAllFiles, setDirectories, setView } from '../reducers/settingsSlice';
 import { setProgress, setUploadFiles } from '../reducers/uploadSlice';
 import { baseURL, instance, SetState } from '../utils/instance';
-import { slicePath } from '../utils/slicePath';
+
 
 
 export const getFiles = (dirId, sort) => {
@@ -30,8 +29,11 @@ export const getFiles = (dirId, sort) => {
             }else {
                 dispatch(setView('list'))
             }
-            
-            const response = await instance.get(url)
+
+            const response = await axios.get(`${baseURL + url}`, {
+                headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+            });
+
             dispatch(setFiles(response.data))
         }catch(e) {
             console.log(e.response.data.message, 'CATCH')

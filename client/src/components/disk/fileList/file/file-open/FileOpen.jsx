@@ -1,41 +1,43 @@
-import {React, useState} from 'react';
-import { API_URL } from '../../../../../utils/urls';
+import { React, useState } from 'react';
+import { baseURL } from '../../../../../utils/instance';
 import style from './fileopen.module.scss'
+import { AiOutlineCloseCircle } from 'react-icons/ai';
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import Audio from '../../../../audio/Audio';
+import Image from '../../../../image/Image';
 
-const FileOpen = ({img, setstate}) => {
+const FileOpen = ({ filePath, setstate, type }) => {
+    const file = baseURL + filePath
 
     const hide = () => {
         setstate(false)
     }
-    const [width, setWidth] = useState(800);
-    const [height, setHeight] = useState(750);
 
-    const scrollPlus = () => {
-        if(width < 1400 && height < 1300) {
-            setWidth(width + 100)
-            setHeight(height + 100)
+    const typeOfFile = () => {
+        if (type === 'pdf') {
+            return <DocViewer documents={[
+                { uri: file }, // Local File
+            ]} pluginRenderers={DocViewerRenderers} />
         }
-    }
-
-    const scrollMinus= () => {
-        if(width > 800 && height > 750) {
-            setWidth(width - 100)
-            setHeight(height - 100)
+        if (type === 'jpg' || type === 'png' || type === 'gif' || type === 'jpeg') {
+            return <Image file={file}/>
+        }
+        if (type === 'mp3' || type === 'ape' || type === 'avi') {
+            return <Audio file={file} />
         }
     }
 
     return (
-        <div className={style.inactive}  
+        <div className={style.inactive}
             onClick={hide}>
-            <div 
-                className={style.img} 
-                style={{width: `${width}px`, height: `${height}px`}} onClick={e => e.stopPropagation()} >
-                <img src={API_URL + img} alt={API_URL + img}
-                />
-                <div className={style.btn__block}>
-                    <button onClick={scrollPlus}>+</button>
-                    <button onClick={scrollMinus}>-</button>
+            <div
+                className={style.container}
+                onClick={e => e.stopPropagation()} >
+                <div onClick={hide}
+                    className={style.close}>
+                    <AiOutlineCloseCircle size={40} />
                 </div>
+                {typeOfFile()}    
             </div>
 
         </div>

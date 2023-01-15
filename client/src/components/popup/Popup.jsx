@@ -19,6 +19,7 @@ const Popup = ({popupDisplay, cansel, currentDir, popupName, action, name, btnNa
         setDirName('')
     }
 
+
     return (
         <div 
             className={!popupDisplay ? style.popup__wrap : style.active}
