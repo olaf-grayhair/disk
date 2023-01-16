@@ -1,13 +1,13 @@
 import {React} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFiles } from '../../actions/file';
-import { clearNav, remNav, setCurrentDir, backNav } from '../../reducers/fileSlice';
+import { clearNav, setCurrentDir, backNav } from '../../reducers/fileSlice';
 import style from './navbutton.module.scss'
 
 const NavButton = ({name, _id, dirNum, id}) => {
     const dispatch = useDispatch()
 
-    const { currentDir, dirStack } = useSelector((state) => state.file)
+    const { currentDir } = useSelector((state) => state.file)
     const user = useSelector((state) => state.user.user)
 
     const moveBack = () => {

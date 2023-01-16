@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteFile, dowloadFile, searchDir } from '../../actions/file';
 import { popupMenuState } from '../../reducers/fileSlice';
@@ -12,6 +12,7 @@ import { MdDriveFileRenameOutline, MdDriveFileMoveOutline } from 'react-icons/md
 import { FaBookmark } from 'react-icons/fa';
 import { FcBookmark } from 'react-icons/fc';
 import { baseURL } from '../instance';
+import { useMemo } from 'react';
 
 
 const ContextMenu = ({ top, left }) => {
@@ -57,10 +58,15 @@ const ContextMenu = ({ top, left }) => {
     const mark = useSelector(state => state.settings.markFiles)
     const arr = JSON.parse(localStorage.getItem('mark')) || [];
 
-    React.useEffect(() => {
+    // useEffect(() => {
+    //     dispatch(setMarkFiles(arr))
+    //     console.log(arr, 'markFile');
+    // }, []);
+
+    useMemo(() => {
         dispatch(setMarkFiles(arr))
-        console.log(arr, 'useEffect');
-    }, []);
+        console.log(arr, 'markFile');
+    }, [])
 
     const markFile = () => {
         arr.push(_id);
