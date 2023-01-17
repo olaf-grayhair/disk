@@ -66,7 +66,7 @@ const ContextMenu = ({ top, left }) => {
     useMemo(() => {
         dispatch(setMarkFiles(arr))
         console.log(arr, 'markFile');
-    }, [])
+    }, [dispatch])
 
     const markFile = () => {
         arr.push(_id);
