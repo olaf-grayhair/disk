@@ -8,7 +8,9 @@ Simple cloud without any attractive design and adaptive.
 Registration with simple validantion, authentication with jsonwebtoken.
 Possibilities to create folders, switch folder, upload files to folder, 
 switch files from one folder to another folder, rename files or folders, delete files or folders.
-Possibilities to change view for folders, simple audio player, simple image viewer with zoom and pdf reader.
+
+Possibilities to change view for folders, serach files and folders, sort files and folders
+simple audio player, simple image viewer with zoom and pdf reader.
 
 
 #Front-end
