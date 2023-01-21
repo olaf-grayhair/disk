@@ -3,7 +3,7 @@ Cloud on MERN stack
 https://olaf-grayhair.github.io/disk
 
 #description
-
+Simple cloud without any attractive design and adaptive.
 Registration with simple validantion, authentication with jsonwebtoken.
 Possibilities to create folders, switch folder, upload files to folder, 
 switch files from one folder to another folder, rename files or folders, delete files or folders.
