@@ -19,7 +19,7 @@ const Navbar = () => {
 
     return (
         <div className={style.navbar}>
-            <Link to='/'>
+            <Link to='/disk'>
                 <img className={style.logo} src={logo} alt="" />
             </Link>
             <div className={style.login}>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { baseURL, instance } from '../utils/instance';
+import { baseURL, instance, setAuthToken } from '../utils/instance';
 import { log, reg } from '../reducers/userSlice'
 
 export const registration = async (email, password) => {
@@ -29,6 +29,10 @@ export const login = (email, password) => {
 
             dispatch(log(response.data.user))
             localStorage.setItem('token',response.data.token)
+
+            // setAuthToken(response.data.token)
+            console.log(response.data.token, 'token');
+            console.log(localStorage.getItem('token'), 'localStorage');
         }catch(e) {
             // alert(e.response.data.message)
             console.log(e.response.data.message, 'CATCH')

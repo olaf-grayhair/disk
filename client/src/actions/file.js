@@ -49,6 +49,7 @@ export const createDir = (name, dirId) => {
         try{
             const response = await instance.post(`files/`, {name, type: 'dir', parent: dirId,})
 
+            console.log(localStorage.getItem('token'), 'localStorage, file');
             dispatch(addFile(response.data))
         }catch(e) {
             console.log(e.response.data.message, 'CATCH')

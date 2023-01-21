@@ -32,10 +32,10 @@ function App() {
         <Navbar/>
         {!isAuth ?
           <Routes>
-            <Route exact path='/' element={<Home/>}/>
+            <Route exact path='/disk' element={<Home/>}/>
             <Route path='/registration' element={<Registration/>} />
             <Route path='/login' element={<Login/>} />
-            <Route path="/" element={<Navigate replace to="/login" />} />
+            <Route path="/disk" element={<Navigate replace to="/login" />} />
           </Routes>//need to find out
           :
           <Routes>
